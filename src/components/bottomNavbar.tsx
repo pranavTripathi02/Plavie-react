@@ -7,7 +7,6 @@ function BottomNavbar() {
   const location = useLocation();
   const [currentPath, setCurrentPath] = useState(location.pathname);
   useEffect(() => {
-    console.log(location, location.pathname);
     setCurrentPath(location.pathname);
   }, [location]);
   return (

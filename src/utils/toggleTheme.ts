@@ -2,8 +2,7 @@
 export type TTheme = "light" | "dark";
 
 function getTheme(): TTheme {
-  const theme: TTheme = localStorage.getItem("theme") || "light";
-  console.log(theme);
+  const theme = (localStorage.getItem("theme") || "light") as TTheme;
   return theme;
 }
 

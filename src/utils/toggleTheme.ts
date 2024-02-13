@@ -1,7 +1,12 @@
 // change local storage theme key as selected by user
-type TTheme = "light" | "dark";
+export type TTheme = "light" | "dark";
 
-function switchTheme(selectedTheme: TTheme) {
+function getTheme(): TTheme {
+  const theme = (localStorage.getItem("theme") || "light") as TTheme;
+  return theme;
+}
+
+function setTheme(selectedTheme: TTheme) {
   if (selectedTheme === "light") {
     document.documentElement.setAttribute("data-theme", "light");
     localStorage.setItem("theme", "light");
@@ -11,4 +16,4 @@ function switchTheme(selectedTheme: TTheme) {
   }
 }
 
-export default switchTheme;
+export { setTheme, getTheme };

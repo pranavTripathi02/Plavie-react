@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Inter:700|Inter:400');
+@import url("https://fonts.googleapis.com/css?family=Poppins:700|Poppins:400");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,7 +8,8 @@
 	:root {
 		--bg: #d6d6d6;
 		--text: #000000;
-		--secondary: #888888;
+		--text-alt: #000000;
+		--secondary: #ddd;
 		--secondary-2: #707070;
 	}
 }
@@ -15,6 +18,7 @@
 	:root {
 		--bg: #1f1f1f;
 		--text: #9f9f9f;
+		--text-alt: #1f1f1f;
 		--secondary: #444;
 		--secondary-2: #303030;
 	}
@@ -36,7 +40,6 @@
 
 	color-scheme: light dark;
 	/* max-width: 1060px; */
-	/* border:1px solid red; */
 
 	--accent: #fd22da;
 
@@ -50,4 +53,16 @@ body {
 
 h1 {
 	font-size: 2.5rem;
+}
+h2 {
+	font-size: 2rem;
+}
+h3 {
+	font-size: 1.75rem;
+}
+h4 {
+	font-size: 1.5rem;
+}
+h5 {
+	font-size: 1.25rem;
 }

@@ -1,5 +1,5 @@
 function Watch() {
-  return <div>video</div>;
+  return <h1>Watch</h1>;
 }
 
 export default Watch;

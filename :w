@@ -1,0 +1,20 @@
+import UnderConstruction from "../assets/underConstruction.svg?react";
+function DevelopingSite() {
+  return (
+    <div className="mx-auto text-center">
+      <div className="mx-auto w-fit text-end">
+        <UnderConstruction height="500" />
+
+        <a
+          href="https://storyset.com/work"
+          className="opacity-30"
+        >
+          Work illustrations by Storyset
+        </a>
+      </div>
+      <h1>This part of our application is still under development</h1>
+    </div>
+  );
+}
+
+export default DevelopingSite;

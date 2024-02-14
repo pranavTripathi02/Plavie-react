@@ -23,7 +23,7 @@ function TopNavbar() {
     <nav className="flex justify-between py-4 px-2 sm:px-10 xl:px-20 items-center">
       {/* logo and nav links */}
       <div className="flex justify-between items-center gap-12">
-        <a href="/">
+        <Link to="/">
           <div className="logo flex gap-1 items-center text-[1.5rem]">
             <span className="hidden sm:inline-block">PLAYVIE</span>
             <Video
@@ -33,7 +33,7 @@ function TopNavbar() {
               height={32}
             />
           </div>
-        </a>
+        </Link>
         {/* links */}
         <div className="hidden md:flex gap-6">
           <Link to="/">Explore</Link>

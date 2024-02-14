@@ -9,7 +9,7 @@
 		--bg: #d6d6d6;
 		--text: #000000;
 		--text-alt: #000000;
-		--secondary: #ddd;
+		--secondary: #ededed;
 		--secondary-2: #707070;
 	}
 }
@@ -45,6 +45,8 @@
 
 	background-color: var(--bg);
 	color: var(--text);
+	transition: all .25s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	/* transition: all .25s cubic-bezier(1, 1.5, 0, -1.5); */ /* tubelight? */
 }
 
 body {

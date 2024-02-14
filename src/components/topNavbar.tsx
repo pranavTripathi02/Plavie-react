@@ -3,9 +3,12 @@ import Moon from "../assets/moon.svg?react";
 import Sun from "../assets/sun.svg?react";
 import Video from "../assets/video.svg?react";
 import { getTheme, setTheme } from "../utils/toggleTheme";
+import { Link } from "react-router-dom";
+
 function TopNavbar() {
   const [currentTheme, setCurrentTheme] = useState(getTheme());
   const [search, setSearch] = useState("");
+
   const handleThemeChange = () => {
     if (currentTheme === "dark") {
       setTheme("light");
@@ -18,17 +21,26 @@ function TopNavbar() {
 
   return (
     <nav className="flex justify-between py-4 px-2 sm:px-10 xl:px-20 items-center">
-      <a href="/">
-        <div className="logo flex gap-1 items-center text-[1.5rem]">
-          <span className="hidden sm:inline-block">PLAYVIE</span>
-          <Video
-            strokeWidth={1}
-            stroke={"var(--accent)"}
-            width={32}
-            height={32}
-          />
+      {/* logo and nav links */}
+      <div className="flex justify-between items-center gap-12">
+        <a href="/">
+          <div className="logo flex gap-1 items-center text-[1.5rem]">
+            <span className="hidden sm:inline-block">PLAYVIE</span>
+            <Video
+              strokeWidth={1}
+              stroke={"var(--accent)"}
+              width={32}
+              height={32}
+            />
+          </div>
+        </a>
+        {/* links */}
+        <div className="hidden md:flex gap-6">
+          <Link to="/">Explore</Link>
+          <Link to="/playlists">Playlists</Link>
         </div>
-      </a>
+      </div>
+      {/* search bar */}
       <div className="search w-2/3 sm:w-1/2 xl:w-1/3">
         <input
           className="placeholder:italic placeholder:opacity-50 text-[var(--text)] focus:outline outline-2 outline-[var(--accent)] w-full rounded-full px-4 py-2 bg-[var(--secondary)]"
@@ -38,6 +50,7 @@ function TopNavbar() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
+      {/* theme toggle */}
       <button onClick={handleThemeChange}>
         {currentTheme === "dark" ? (
           <Sun

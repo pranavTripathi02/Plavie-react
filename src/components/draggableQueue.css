@@ -1,0 +1,7 @@
+.draggingOver {
+	border-top: 5px solid var(--accent);
+}
+
+.dragging {
+	opacity: .5;
+}

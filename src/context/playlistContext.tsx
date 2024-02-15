@@ -1,17 +1,15 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 
-type TPlaylist = {
+export type TPlaylist = {
   playlistId: number;
   playlistIdx: number;
   playlistName: string;
   playlistContents?: number[];
 };
 type TPlaylistContext = {
-  currentPlaylist: Pick<TPlaylist, "playlistId"> | null;
+  currentPlaylist: TPlaylist | null;
   playlists: TPlaylist[];
-  setCurrentPlaylist: React.Dispatch<
-    React.SetStateAction<Pick<TPlaylist, "playlistId"> | null>
-  >;
+  setCurrentPlaylist: React.Dispatch<React.SetStateAction<TPlaylist | null>>;
   addPlaylist: ({ playlistName }: { playlistName: string }) => void;
   changePlaylistContent: ({
     videoId,
@@ -20,16 +18,22 @@ type TPlaylistContext = {
     videoId: number;
     playlistId: number;
   }) => void;
+  updatePlaylistOrder: ({
+    playlistId,
+    newPlaylistContents,
+  }: {
+    playlistId: number;
+    newPlaylistContents: number[];
+  }) => void;
 };
 
 const PlaylistContext = createContext<TPlaylistContext | null>(null);
 
 function PlaylistContextProvider({ children }: { children: ReactNode }) {
   const [playlists, setPlaylists] = useState<TPlaylist[]>([]);
-  const [currentPlaylist, setCurrentPlaylist] = useState<Pick<
-    TPlaylist,
-    "playlistId"
-  > | null>(null);
+  const [currentPlaylist, setCurrentPlaylist] = useState<TPlaylist | null>(
+    null,
+  );
 
   // add/remove videoid from existing playlist
   const changePlaylistContent = ({
@@ -60,7 +64,7 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
   };
   // add new playlist
   const addPlaylist = ({ playlistName }: { playlistName: string }) => {
-    console.log(playlistName);
+    // console.log(playlistName);
     const newPlaylist: TPlaylist = {
       playlistId: Date.now(),
       playlistName,
@@ -73,6 +77,20 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
       setPlaylists([newPlaylist]);
     }
     updateLocalStoragePlaylist();
+  };
+
+  const updatePlaylistOrder = ({
+    playlistId,
+    newPlaylistContents,
+  }: {
+    playlistId: number;
+    newPlaylistContents: number[];
+  }) => {
+    const playlist = playlists.find(
+      (playlistItem) => playlistItem.playlistId === playlistId,
+    );
+    if (!playlist) return;
+    playlist.playlistContents = newPlaylistContents;
   };
 
   const updateLocalStoragePlaylist = () => {
@@ -95,6 +113,7 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
         currentPlaylist,
         setCurrentPlaylist,
         changePlaylistContent,
+        updatePlaylistOrder,
       }}
     >
       {children}

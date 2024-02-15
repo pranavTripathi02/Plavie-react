@@ -4,7 +4,7 @@ import CheckSVG from "../assets/check.svg?react";
 import { useState } from "react";
 // import useVideosContext from "../hooks/useVideosContext";
 //
-function CreateNewPlaylist({
+export function CreateNewPlaylist({
   handleAddNewPlaylist,
 }: {
   handleAddNewPlaylist: (str: string) => void;

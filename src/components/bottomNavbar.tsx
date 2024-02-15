@@ -9,9 +9,10 @@ function BottomNavbar() {
   useEffect(() => {
     setCurrentPath(location.pathname);
   }, [location]);
+  // console.log("hi");
   return (
     <>
-      <nav className="flex sm:hidden  justify-between w-full px-2 py-4 fixed">
+      <nav className="flex md:hidden justify-between w-full px-2 py-4 fixed bottom-0 bg-[var(--bg)]">
         <Link
           to="/watch"
           className={`${

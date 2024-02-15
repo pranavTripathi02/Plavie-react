@@ -6,7 +6,7 @@ function getTheme(): TTheme {
   return theme;
 }
 
-function setTheme(selectedTheme: TTheme) {
+async function setTheme(selectedTheme: TTheme) {
   if (selectedTheme === "light") {
     document.documentElement.setAttribute("data-theme", "light");
     localStorage.setItem("theme", "light");

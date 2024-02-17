@@ -20,7 +20,12 @@
 - Playlists
 - React Context API used for state management.
 
-#### Instructions to build and run the application locally:
+#### Lighthouse Scores
+[Link to lighthouse page](https://lighthouse-metrics.com/lighthouse/checks/ffc5d968-37d3-4792-ac49-f7ef62adc5e5)
+![1](./screens/lighthouse-1.png)
+![2](./screens/lighthouse-2.png)
+
+##### Instructions to build and run the application locally:
 
 Clone the repo using `git clone <repo-url>` and cd into the directory using `cd Playvie-react`
 
@@ -35,10 +40,14 @@ npm install
 npm run build
 ```
 to install the dependencies and build the application.
+```
+pnpm run start
+```
+or
+```
+npm run start
+```
+
+to start the application.
 
 
-
-##### Lighthouse Scores
-[Link to lighthouse page](https://lighthouse-metrics.com/lighthouse/checks/ffc5d968-37d3-4792-ac49-f7ef62adc5e5)
-![1](./screens/lighthouse-1.png)
-![2](./screens/lighthouse-2.png)

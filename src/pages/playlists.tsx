@@ -24,6 +24,7 @@ function Playlists() {
   // setCurrentPlaylist(null);
   // const navigate = useNavigate();
   const handleChoosePlaylist = (playlistId: number) => {
+    // console.log(playlists);
     const selectedPlaylist =
       playlists.find((playlist) => playlist.playlistId === playlistId) || null;
     setCurrentPlaylist(selectedPlaylist);
@@ -64,17 +65,19 @@ function Playlists() {
         </div>
       )}
       {/* create new playlist */}
-      <div className="w-full flex justify-end">
-        <button
-          className="mx-4 my-2 px-2 py-1 rounded-lg bg-[var(--secondary-2)]"
-          onClick={changeCreateNewPlaylistStatus}
-        >
-          {createNewPlaylist ? "Cancel" : "Create new playlist"}
-        </button>
-        {createNewPlaylist && (
-          <CreateNewPlaylist handleAddNewPlaylist={handleAddNewPlaylist} />
-        )}
-      </div>
+      {!playlistView && (
+        <div className="w-full flex flex-col justify-start">
+          {createNewPlaylist && (
+            <CreateNewPlaylist handleAddNewPlaylist={handleAddNewPlaylist} />
+          )}
+          <button
+            className="mx-4 my-2 px-2 py-1 w-fit rounded-lg bg-[var(--secondary-2)]"
+            onClick={changeCreateNewPlaylistStatus}
+          >
+            {createNewPlaylist ? "Cancel" : "Create new playlist"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useVideosContext from "../hooks/useVideosContext";
 // import { useState } from "react";
 // import { TVideo } from "../types";
@@ -85,6 +85,24 @@ function Watch() {
       setCurrentPlaylist(playlistSelected);
     }
   }
+
+  const navigate = useNavigate();
+  const handleVideoEnded = () => {
+    if (currentPlaylist) {
+      currentPlaylist.playlistIdx =
+        (currentPlaylist.playlistIdx + 1) %
+        currentPlaylist.playlistContents!.length;
+      navigate(
+        `/watch?pid=${currentPlaylist.playlistId}&pidx=${
+          (currentPlaylist.playlistIdx + 1) %
+          currentPlaylist.playlistContents!.length
+        }`,
+      );
+    } else {
+      navigate("/");
+    }
+  };
+
   // if (videoId) {
   //   const videoFound = videosList.find(({ id }) => id === videoId);
   //   if (videoFound) setVideoSelected(videoFound);
@@ -98,7 +116,10 @@ function Watch() {
     <div>
       {/* main video player */}
       <div>
-        <ViewVideo video={videoSelected} />
+        <ViewVideo
+          video={videoSelected}
+          handleVideoEnded={handleVideoEnded}
+        />
       </div>
       <hr className="border-t border-black my-4" />
       <div className="md:flex w-full">

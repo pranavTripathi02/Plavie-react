@@ -29,6 +29,8 @@ function VideoCard({
           src={`${baseUrl}${thumb}`}
           alt={`Video thumbnail for video titled ${title}`}
           className="object-cover hover:scale-105 duration-300"
+          height={360}
+          width={480}
         />
         <button
           className="absolute scale-0 group-hover:scale-100 bottom-4 right-4 text-white bg-black/50 rounded-lg"

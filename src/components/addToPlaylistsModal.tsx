@@ -11,7 +11,7 @@ export function CreateNewPlaylist({
 }) {
   const [newPlaylistName, setNewPlaylistName] = useState("");
   return (
-    <div className="flex flex-col justify-start h-full mx-4 my-4 overflow-scroll">
+    <div className="flex flex-col justify-start h-full mx-4 my-4 overflow-scroll w-full">
       <label
         htmlFor="newPlaylistName"
         className="mt-2"
@@ -35,7 +35,7 @@ export function CreateNewPlaylist({
           onChange={(e) => setNewPlaylistName(e.target.value)}
         />
         <button
-          className="bg-[var(--text)] p-2 rounded-lg mx-2"
+          className="bg-[var(--text)] text-[var(--bg)] p-2 rounded-lg mx-2"
           type="submit"
         >
           <CheckSVG />
@@ -80,7 +80,7 @@ function AddToPlaylistModal({
         className="fixed inset-0 w-screen h-screen bg-black/50 z-10"
         onClick={handleShowPlaylistModal}
       />
-      <div className="fixed left-0 top-0 right-0 bottom-0 flex flex-col justify-between text-white h-2/5 lg:h-3/5 w-80 z-20 bg-[var(--bg)] rounded-xl m-auto">
+      <div className="fixed left-0 top-0 right-0 bottom-0 flex flex-col justify-between text-[var(--text)] h-2/5 lg:h-3/5 w-80 z-20 bg-[var(--bg)] rounded-xl m-auto">
         {/* add to playlist header */}
         <div className="flex mx-4 my-2 justify-between">
           <span>Add to playlist</span>
@@ -108,7 +108,7 @@ function AddToPlaylistModal({
                     <span>{playlist.playlistName}</span>
                     <input
                       id={playlist.playlistId.toString()}
-                      className="appearance-none bg-[var(--secondary)] h-4 w-4 checked:bg-[var(--accent)]"
+                      className="appearance-none bg-[var(--secondary)] border-1 border-[var(--text)] h-4 w-4 checked:bg-[var(--accent)]"
                       type="checkbox"
                       // using math.random and defaultChecked instead of checked to rerended onchange
                       key={Math.random()}
@@ -128,10 +128,16 @@ function AddToPlaylistModal({
         {/* create new playlist */}
         <div className="w-full flex justify-end">
           <button
-            className="mx-4 my-2 px-2 py-1 rounded-lg bg-[var(--secondary-2)]"
+            className="me-4 my-2 px-2 py-1 rounded-lg border border-[var(--secondary-2)]"
             onClick={changeCreateNewPlaylistStatus}
           >
             {createNewPlaylist ? "Cancel" : "New playlist"}
+          </button>
+          <button
+            className="me-4 my-2 px-2 py-1 rounded-lg bg-[var(--text)] text-[var(--secondary)]"
+            onClick={handleShowPlaylistModal}
+          >
+            Done
           </button>
         </div>
       </div>

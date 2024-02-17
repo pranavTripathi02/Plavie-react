@@ -12,7 +12,13 @@ import GaugeSVG from "../../assets/gauge.svg?react";
 import timeFormat from "../../utils/timeFormat";
 import useVideosContext from "../../hooks/useVideosContext";
 
-function VideoPlayer({ video }: { video: TVideo }) {
+function VideoPlayer({
+  video,
+  handleVideoEnded,
+}: {
+  video: TVideo;
+  handleVideoEnded: () => void;
+}) {
   const { videoMeta, handleUpdateVideoMeta } = useVideosContext();
   const [videoDuration, setVideoDuration] = useState<number | null>(null);
   const [videoProgress, setVideoProgress] = useState<number | null>(null);
@@ -60,10 +66,10 @@ function VideoPlayer({ video }: { video: TVideo }) {
 
   const handleVideoProgressBarUpdate = () => {
     // const parsedTime = parseInt((timestamp / 1000).toFixed(0));
-    console.log(inputRef.current!.style.backgroundSize);
+    // console.log(inputRef.current!.style.backgroundSize);
     inputRef.current!.style.backgroundSize =
       (videoProgress! / videoDuration!) * 100 + "%";
-    console.log(inputRef.current!.style.backgroundSize);
+    // console.log(inputRef.current!.style.backgroundSize);
     setVideoProgress(videoRef.current!.currentTime);
   };
   const handleVideoProgressChange = (timeStamp: number) => {
@@ -76,8 +82,9 @@ function VideoPlayer({ video }: { video: TVideo }) {
   };
 
   // const navigate = useNavigate();
-  const handleVideoEnded = () => {
-    console.log("video has ended");
+  const videoHasEnded = () => {
+    // console.log("video has ended");
+    handleVideoEnded();
     // navigate("/");
   };
   // controls
@@ -146,7 +153,7 @@ function VideoPlayer({ video }: { video: TVideo }) {
           height={720}
           width={1280}
           onTimeUpdate={handleVideoProgressBarUpdate}
-          onEnded={handleVideoEnded}
+          onEnded={videoHasEnded}
           onLoadedMetadata={handleLoadedMetadata}
           onClick={handlePlayPauseToggle}
         ></video>

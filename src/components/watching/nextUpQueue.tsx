@@ -5,8 +5,14 @@ function NextUpQueue() {
   const { currentPlaylist } = usePlaylistContext();
   return (
     <div>
-      <h5>Next up in {currentPlaylist?.playlistName}</h5>
-      <DraggableQueue />
+      {currentPlaylist ? (
+        <div>
+          <h5>Next up in {currentPlaylist?.playlistName}</h5>
+          <DraggableQueue />
+        </div>
+      ) : (
+        <h5>No playlist selected</h5>
+      )}
     </div>
   );
 }

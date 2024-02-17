@@ -4,10 +4,9 @@ import useVideosContext from "../hooks/useVideosContext";
 import AddToPlaylistModal from "../components/addToPlaylistsModal";
 
 function Homepage() {
-  const { videosList } = useVideosContext();
+  const { videoList } = useVideosContext();
   const [showAddToPlaylistModal, setShowAddToPlaylistModal] = useState(false);
   const [videoId, setVideoId] = useState<number | null>(null);
-  // console.log(videosList);
   const handleShowPlaylistModal = () => {
     setShowAddToPlaylistModal((prev) => !prev);
   };
@@ -21,7 +20,7 @@ function Homepage() {
       )}
       <h1>Explore</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
-        {videosList.map((video) => (
+        {videoList.map((video) => (
           <div
             key={video.id}
             className="overflow-hidden w-full h-full relative"

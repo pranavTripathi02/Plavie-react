@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import usePlaylistContext from "../hooks/usePlaylistContext";
 import DraggableQueue from "../components/draggableQueue";
 import { useState } from "react";
 import { CreateNewPlaylist } from "../components/addToPlaylistsModal";
+import LeftArrowSVG from "../assets/leftArrow.svg?react";
 // import UnderDevelopment from "./underDevelopment";
 
 function Playlists() {
@@ -10,6 +11,8 @@ function Playlists() {
     usePlaylistContext();
 
   const [createNewPlaylist, setCreateNewPlaylist] = useState(false);
+  const [playlistView, setPlaylistView] = useState(false);
+
   const changeCreateNewPlaylistStatus = () => {
     setCreateNewPlaylist((prev) => !prev);
   };
@@ -18,34 +21,47 @@ function Playlists() {
     addPlaylist({ playlistName });
     setCreateNewPlaylist(false);
   };
-  setCurrentPlaylist(null);
-  const navigate = useNavigate();
+  // setCurrentPlaylist(null);
+  // const navigate = useNavigate();
   const handleChoosePlaylist = (playlistId: number) => {
-    setCurrentPlaylist(
-      playlists.find((playlist) => playlist.playlistId === playlistId) || null,
-    );
-    navigate(`/watch?pid=${playlistId}&pidx=${currentPlaylist?.playlistIdx}`);
+    const selectedPlaylist =
+      playlists.find((playlist) => playlist.playlistId === playlistId) || null;
+    setCurrentPlaylist(selectedPlaylist);
+    setPlaylistView(true);
   };
+
   return (
     <div>
       <h1 className="mb-8">Playlists</h1>
-      {currentPlaylist ? (
-        <div className="flex">
-          {/* {currentPlaylistVideos.map((video) => { */}
+      {playlistView && currentPlaylist ? (
+        <div className="flex flex-col">
+          <button
+            className="flex gap-4"
+            onClick={() => {
+              setPlaylistView(false);
+              // navigate(-1);
+            }}
+          >
+            <LeftArrowSVG />
+            <span>Back to playlists</span>
+          </button>
           <DraggableQueue />
         </div>
       ) : (
-        playlists.map((playlist) => {
-          return (
-            <div
-              key={playlist.playlistId}
-              className="flex flex-col bg-[var(--secondary-2)] gap-4 px-4 py-2 rounded-xl cursor-pointer"
-              onClick={() => handleChoosePlaylist(playlist.playlistId)}
-            >
-              {playlist.playlistName}
-            </div>
-          );
-        })
+        <div className="flex flex-col gap-4 mb-8">
+          {playlists &&
+            playlists.map((playlist) => {
+              return (
+                <div
+                  key={playlist.playlistId}
+                  className="flex flex-col bg-[var(--secondary-2)] gap-4 px-4 py-4 rounded-xl cursor-pointer hover:bg-[var(--secondary)]"
+                  onClick={() => handleChoosePlaylist(playlist.playlistId)}
+                >
+                  {playlist.playlistName}
+                </div>
+              );
+            })}
+        </div>
       )}
       {/* create new playlist */}
       <div className="w-full flex justify-end">

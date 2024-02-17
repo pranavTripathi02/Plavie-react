@@ -1,5 +1,5 @@
 import NextUpQueue from "./nextUpQueue";
-import VideoPlayer from "./videoPlayer";
 import SuggestedVideos from "./suggestedVideos";
+import ViewVideo from "./viewVideo";
 
-export { NextUpQueue, VideoPlayer, SuggestedVideos };
+export { NextUpQueue, ViewVideo, SuggestedVideos };

@@ -17,8 +17,8 @@ type TVideosContext = {
   videoList: TVideo[];
   // currentVideo: Pick<TVideo, "id"> | null; // for in the case of non-url based video playing
   // setCurrentVideo: React.Dispatch<SetStateAction<Pick<TVideo, "id"> | null>>;
-  videoSearch?: string;
-  setVideoSearch: React.Dispatch<SetStateAction<string | undefined>>;
+  videoSearch: string;
+  setVideoSearch: React.Dispatch<SetStateAction<string>>;
   videoMeta: TVideoMeta[] | null;
   handleUpdateVideoMeta: (videoId: number, timestamp: number) => void;
 };
@@ -51,7 +51,7 @@ function VideoContextProvider({ children }: { children: ReactNode }) {
   };
 
   // video search term for filtering
-  const [videoSearch, setVideoSearch] = useState<string | undefined>();
+  const [videoSearch, setVideoSearch] = useState<string>("");
 
   // we are using local data; else need to make api call
   const fetchVideos = () => {

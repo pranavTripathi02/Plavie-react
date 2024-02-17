@@ -11,7 +11,7 @@ function TopNavbar() {
   const [currentTheme, setCurrentTheme] = useState(getTheme());
   const { setVideoSearch } = useVideosContext();
   const [search, setSearch] = useState("");
-  const debouncedSearchTerm = useDebounce(search);
+  const debouncedSearchTerm = useDebounce(search.toLowerCase());
 
   useEffect(() => {
     setVideoSearch(debouncedSearchTerm);

@@ -14,9 +14,9 @@ function Homepage() {
   if (videoSearch) {
     filteredVideoList = videoList.filter(
       (video) =>
-        video.title.includes(videoSearch) ||
-        video.description.includes(videoSearch) ||
-        video.subtitle.includes(videoSearch),
+        video.title.toLowerCase().includes(videoSearch) ||
+        video.description.toLowerCase().includes(videoSearch) ||
+        video.subtitle.toLowerCase().includes(videoSearch),
     );
   }
   return (

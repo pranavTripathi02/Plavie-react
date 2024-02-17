@@ -110,6 +110,17 @@ function VideoPlayer({
         if (videoPlaybackRate > 0.5)
           handlePlaybackRate((videoPlaybackRate - 0.5).toString());
         break;
+      case "m":
+        handleVideoVolume();
+        break;
+      case "ArrowDown":
+        if (videoRef.current?.volume && videoRef.current?.volume > 0)
+          videoRef.current.volume -= 0.05;
+        break;
+      case "ArrowUp":
+        if (videoRef.current?.volume && videoRef.current?.volume < 1)
+          videoRef.current.volume += 0.05;
+        break;
       default:
         break;
     }

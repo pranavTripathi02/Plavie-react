@@ -31,6 +31,7 @@ function VideoPlayer({
   };
 
   useEffect(() => {
+    if (videoRef) videoRef.current?.focus();
     if (videoMeta) {
       const videoMetaInfo = videoMeta.find((item) => item.id === video.id);
       // console.log(videoMetaInfo);
@@ -49,7 +50,7 @@ function VideoPlayer({
 
   const [isVideoFullscreen, setIsVideoFullscreen] = useState(false);
 
-  // const [videoPlaybackRate, setVideoPlaybackRate] = useState(1);
+  const [videoPlaybackRate, setVideoPlaybackRate] = useState<number>(1);
 
   // let isVideoLoop = false;
 
@@ -79,6 +80,39 @@ function VideoPlayer({
     // console.log(videoProgress, videoDuration);
     videoRef.current!.currentTime = timeStamp;
     setVideoProgress(timeStamp);
+  };
+
+  const handleKeyboardShortcuts = (
+    e: React.KeyboardEvent<HTMLVideoElement>,
+  ) => {
+    const key = e.key;
+    // console.log(key);
+    switch (key) {
+      case "ArrowLeft":
+      case "j":
+        if (videoRef.current?.currentTime)
+          handleVideoProgressChange(videoRef.current?.currentTime - 5);
+        break;
+      case "ArrowRight":
+      case "l":
+        if (videoRef.current?.currentTime)
+          handleVideoProgressChange(videoRef.current?.currentTime + 5);
+        break;
+      case " ":
+      case "k":
+        handlePlayPauseToggle();
+        break;
+      case ">":
+        if (videoPlaybackRate < 2.5)
+          handlePlaybackRate((videoPlaybackRate + 0.5).toString());
+        break;
+      case "<":
+        if (videoPlaybackRate > 0.5)
+          handlePlaybackRate((videoPlaybackRate - 0.5).toString());
+        break;
+      default:
+        break;
+    }
   };
 
   // const navigate = useNavigate();
@@ -111,9 +145,9 @@ function VideoPlayer({
   //   isVideoLoop = !isVideoLoop;
   // };
   // speed control
-  const handlePlaybackRate = (newPlaybackRate: number) => {
-    videoRef.current!.playbackRate = newPlaybackRate;
-    // setVideoPlaybackRate(newPlaybackRate);
+  const handlePlaybackRate = (newPlaybackRate: string) => {
+    videoRef.current!.playbackRate = parseFloat(newPlaybackRate);
+    setVideoPlaybackRate(parseFloat(newPlaybackRate));
   };
   // volume
   const handleVideoVolume = () => {
@@ -123,10 +157,18 @@ function VideoPlayer({
     }
   };
   // fullscreen
-  const handleFullscreenToggle = () => {
-    videoRef.current
-      ?.requestFullscreen()
-      .then(() => setIsVideoFullscreen((prev) => !prev));
+  const handleFullscreenToggle = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    const element = e.currentTarget.closest("figure");
+    console.log(element);
+    if (element && !document.fullscreenElement) {
+      element.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    } // videoRef.current
+    //   ?.requestFullscreen()
+    //   .then(() => setIsVideoFullscreen((prev) => !prev));
   };
   return (
     <div>
@@ -156,10 +198,11 @@ function VideoPlayer({
           onEnded={videoHasEnded}
           onLoadedMetadata={handleLoadedMetadata}
           onClick={handlePlayPauseToggle}
+          onKeyDown={(e) => handleKeyboardShortcuts(e)}
         ></video>
         {/* controls */}
         {videoRef.current && (
-          <div className="controls absolute bottom-0 duration-200 ease-out opacity-0 group-hover:opacity-100 w-full flex flex-col justify-center bg-black/70 h-fit pt-1 pb-2">
+          <div className="controls absolute bottom-0 duration-200 ease-out opacity-0 group-hover:opacity-100 w-full flex flex-col justify-center bg-black/70 h-fit pt-1 pb-2 z-[2147483648]">
             {/* controls line 1 */}
             <div className="timeline w-full px-2 h-fit">
               {/* progress bar */}
@@ -169,7 +212,7 @@ function VideoPlayer({
               {/*   max={100} */}
               {/* > */}
               <input
-                className="w-full h-2"
+                className="w-full h-4"
                 ref={inputRef}
                 type="range"
                 value={videoProgress || 0}
@@ -202,9 +245,20 @@ function VideoPlayer({
               {/* playback rate,loop, volume and fullscreen controls */}
               <div className="flex gap-4">
                 {/* playback rate control */}
-                <button onClick={() => handlePlaybackRate(1)}>
+                <div className="flex gap-1">
                   <GaugeSVG />
-                </button>
+                  <select
+                    className="bg-transparent me-2 p-0"
+                    value={videoPlaybackRate}
+                    onChange={(e) => handlePlaybackRate(e.target.value)}
+                  >
+                    <option value="0.5">0.5</option>
+                    <option value="1">1</option>
+                    <option value="1.5">1.5</option>
+                    <option value="2">2</option>
+                    <option value="2.5">2.5</option>
+                  </select>
+                </div>
                 {/* loop */}
                 {/* <button onClick={handleVideoLoop}> */}
                 {/*   <LoopSVG /> */}
@@ -216,7 +270,7 @@ function VideoPlayer({
                 {/* fullscreen */}
                 <button
                   id="fullscreen"
-                  onClick={handleFullscreenToggle}
+                  onClick={(e) => handleFullscreenToggle(e)}
                 >
                   {isVideoFullscreen ? (
                     <FullscreenMinSVG />

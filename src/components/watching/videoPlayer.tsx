@@ -166,7 +166,9 @@ function VideoPlayer({
       element.requestFullscreen();
     } else {
       document.exitFullscreen();
-    } // videoRef.current
+    }
+    setIsVideoFullscreen((prev) => !prev);
+    // videoRef.current
     //   ?.requestFullscreen()
     //   .then(() => setIsVideoFullscreen((prev) => !prev));
   };

@@ -2,25 +2,35 @@
 import DragSVG from "../assets/drag.svg?react";
 import baseUrl from "../api/baseUrl";
 import "./draggableQueue.css";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import usePlaylistContext from "../hooks/usePlaylistContext";
 import useVideosContext from "../hooks/useVideosContext";
+import { TVideo } from "../types";
 // import { TPlaylist } from "../context/playlistContext";
 
 function DraggableQueue() {
-  const { currentPlaylist, setCurrentPlaylist, updatePlaylistOrder } =
+  const { playlists, currentPlaylist, updatePlaylistOrder } =
     usePlaylistContext();
   const playlistQueue = currentPlaylist?.playlistContents;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const { videosList } = useVideosContext();
+  const { videoList } = useVideosContext();
   const [draggingItemIdx, setDraggingItemIdx] = useState<number | null>(null);
 
-  const currentPlaylistVideos = videosList.filter(
-    (video) => currentPlaylist?.playlistContents?.includes(video.id),
-  );
-  // console.log(currentPlaylistVideos);
+  // const currentPlaylistVideos = videoList.filter(
+  //   (video) => currentPlaylist?.playlistContents?.includes(video.id),
+  // );
+  const currentPlaylistVideos: TVideo[] = [];
+  // currentPlaylistVideos = currentPlaylistVideos.push(
+  currentPlaylist?.playlistContents?.forEach((idx) => {
+    const foundVideo = videoList.find((item) => item.id === idx);
+    if (foundVideo) return currentPlaylistVideos.push(foundVideo);
+  });
+  // );
+  // if (!currentPlaylistVideos || currentPlaylistVideos.length < 1)
+  //   currentPlaylistVideos = [];
+  // console.log(currentPlaylist);
 
   if (!currentPlaylist?.playlistId) {
     return <div>No playlist selected</div>;
@@ -81,7 +91,7 @@ function DraggableQueue() {
     <div>
       {currentPlaylistVideos.map((video) => {
         const currentIdx =
-          (currentPlaylist.playlistContents?.indexOf(video.id) || 0) + 1;
+          currentPlaylist.playlistContents?.indexOf(video.id) || 0;
         return (
           <div
             className="queueItem"
@@ -95,18 +105,22 @@ function DraggableQueue() {
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleDrop(e)}
           >
-            <div
-              // to={`/watch?vid=${video.id}&pid=${currentPlaylist.playlistId}&pidx=${currentPlaylist.playlistIdx}`}
+            <Link
+              to={`/watch?vid=${video.id}&pid=${
+                currentPlaylist.playlistId
+              }&pidx=${currentPlaylist.playlistContents?.indexOf(video.id)}`}
               onClick={() => {
-                setCurrentPlaylist({
-                  ...currentPlaylist,
-                  playlistIdx:
-                    (currentPlaylist.playlistContents?.indexOf(video.id) || 0) +
-                    1,
-                });
-                navigate(
-                  `/watch?vid=${video.id}&pid=${currentPlaylist.playlistId}&pidx=${currentIdx}`,
+                currentPlaylist.playlistIdx =
+                  (currentPlaylist.playlistContents?.indexOf(video.id) || 0) +
+                  1;
+                const findInPlaylists = playlists.find(
+                  (it) => it.playlistId === currentPlaylist.playlistId,
                 );
+                if (findInPlaylists)
+                  findInPlaylists.playlistIdx = currentPlaylist.playlistIdx;
+                // navigate(
+                //   `/watch?vid=${video.id}&pid=${currentPlaylist.playlistId}&pidx=${currentIdx}`,
+                // );
               }}
             >
               <div
@@ -138,7 +152,7 @@ function DraggableQueue() {
                   {/* <div className="absolute left-0 right-0 top-0 bottom-0"></div> */}
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         );
       })}

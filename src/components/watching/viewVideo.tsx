@@ -6,7 +6,13 @@ import "./videoPlayer.css";
 // import { useNavigate } from "react-router-dom";
 import VideoPlayer from "./videoPlayer";
 
-function ViewVideo({ video }: { video: TVideo | undefined }) {
+function ViewVideo({
+  video,
+  handleVideoEnded,
+}: {
+  video: TVideo | undefined;
+  handleVideoEnded: () => void;
+}) {
   const [descIsActive, setDescIsActive] = useState(false);
 
   return (
@@ -15,7 +21,10 @@ function ViewVideo({ video }: { video: TVideo | undefined }) {
       {/* <div className="absolute z-[-1] w-screen left-0 top-0 bottom-0 border-2 bg-black" /> */}
       {video && (
         <>
-          <VideoPlayer video={video} />
+          <VideoPlayer
+            video={video}
+            handleVideoEnded={handleVideoEnded}
+          />
           {/* meta */}
           <div>
             <h2>{video.title}</h2>

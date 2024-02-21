@@ -10,8 +10,7 @@ import { TVideo } from "../types";
 // import { TPlaylist } from "../context/playlistContext";
 
 function DraggableQueue() {
-  const { playlists, currentPlaylist, updatePlaylistOrder } =
-    usePlaylistContext();
+  const { playlists, currentPlaylist, updatePlaylist } = usePlaylistContext();
   const playlistQueue = currentPlaylist?.playlistContents;
   // const navigate = useNavigate();
 
@@ -44,8 +43,10 @@ function DraggableQueue() {
     str: "start" | "end",
   ) => {
     if (str === "start") {
+      console.log("adding", e.currentTarget.closest(".queueItem"));
       e.currentTarget.closest(".queueItem")?.classList.add("draggingOver");
     } else {
+      console.log("removing", e.currentTarget.closest(".queueItem"));
       e.currentTarget.closest(".queueItem")?.classList.remove("draggingOver");
     }
   };
@@ -116,6 +117,8 @@ function DraggableQueue() {
     };
     let newQueue = playlistQueue!;
     newQueue = rotateArr(newQueue, oldIdx, newIdx);
+
+    currentPlaylist.playlistContents = newQueue;
     // if (newIdx < oldIdx) {
     //   rotateArr(newQueue, oldIdx, newIdx);
     // } else {
@@ -124,9 +127,9 @@ function DraggableQueue() {
 
     // const newQueue = playlistQueue!;
 
-    updatePlaylistOrder({
+    updatePlaylist({
       playlistId: currentPlaylist.playlistId,
-      newPlaylistContents: newQueue,
+      playlist: currentPlaylist,
     });
 
     setDraggingItemIdx(null);
@@ -139,13 +142,12 @@ function DraggableQueue() {
           currentPlaylist.playlistContents?.indexOf(video.id) || 0;
         return (
           <div
-            className="queueItem"
+            className="queueItem duration-100"
             key={video.id}
             draggable={true}
-            // dragover used to recheck hover
-            // onDragOver={(e) => handleDragBehind(e, "start")}
-            onDragLeave={(e) => handleDragBehind(e, "end")}
             onDragStart={(e) => handleDrag(e, "start")}
+            onDragEnter={(e) => handleDragBehind(e, "start")}
+            onDragLeave={(e) => handleDragBehind(e, "end")}
             onDragEnd={(e) => handleDrag(e, "end")}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleDrop(e)}
@@ -186,11 +188,12 @@ function DraggableQueue() {
                     <img
                       src={`${baseUrl}${video.thumb}`}
                       alt="video thumbnail"
-                      width="100"
+                      width={96}
+                      height={72}
                     />
                   </div>
                   {/* video title */}
-                  <div>
+                  <div className="w-1/3">
                     <span>{video.title}</span>
                   </div>
                   {/* for consistent styling */}

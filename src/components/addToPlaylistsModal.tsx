@@ -2,6 +2,7 @@ import usePlaylistContext from "../hooks/usePlaylistContext";
 import CloseSVG from "../assets/close.svg?react";
 import CheckSVG from "../assets/check.svg?react";
 import { useState } from "react";
+import { TPlaylist } from "../context/playlistContext";
 // import useVideosContext from "../hooks/useVideosContext";
 //
 export function CreateNewPlaylist({
@@ -52,8 +53,7 @@ function AddToPlaylistModal({
   videoId: number | null;
   handleShowPlaylistModal: () => void;
 }) {
-  const { playlists, addPlaylist, changePlaylistContent } =
-    usePlaylistContext();
+  const { playlists, addPlaylist, updatePlaylist } = usePlaylistContext();
   const [createNewPlaylist, setCreateNewPlaylist] = useState(false);
   const changeCreateNewPlaylistStatus = () => {
     setCreateNewPlaylist((prev) => !prev);
@@ -65,11 +65,20 @@ function AddToPlaylistModal({
     setCreateNewPlaylist(false);
   };
 
-  const handleAddVideoToPlaylist = (videoId: number, playlistId: number) => {
-    changePlaylistContent({
-      videoId,
-      playlistId,
-    });
+  const handleAddVideoToPlaylist = (videoId: number, playlist: TPlaylist) => {
+    if (!playlist.playlistContents) {
+      console.log("adding new");
+      playlist.playlistContents = [videoId];
+    } else if (playlist.playlistContents.indexOf(videoId) > -1) {
+      console.log("removing");
+      playlist.playlistContents = playlist.playlistContents.filter(
+        (id) => id !== videoId,
+      );
+    } else {
+      console.log("adding");
+      playlist.playlistContents.push(videoId);
+    }
+    updatePlaylist({ playlistId: playlist.playlistId, playlist });
   };
 
   // const {} = useVideosContext()
@@ -114,7 +123,7 @@ function AddToPlaylistModal({
                       key={Math.random()}
                       defaultChecked={isVideoInPlaylist}
                       onChange={() => {
-                        handleAddVideoToPlaylist(videoId!, playlist.playlistId);
+                        handleAddVideoToPlaylist(videoId!, playlist);
                       }}
                     />
                   </label>

@@ -159,7 +159,7 @@ function VideoPlayer({
         ></video>
         {/* controls */}
         {videoRef.current && (
-          <div className="controls absolute bottom-0 duration-200 ease-out opacity-0 group-hover:opacity-100 w-full flex flex-col justify-center bg-black/70 h-fit pt-1 pb-2">
+          <div className="controls absolute bottom-0 duration-200 ease-out opacity-0 group-hover:opacity-100 w-full flex flex-col justify-center bg-black/70 h-fit pt-0 pb-2">
             {/* controls line 1 */}
             <div className="timeline w-full px-2 h-fit">
               {/* progress bar */}
@@ -182,9 +182,9 @@ function VideoPlayer({
               {/* </progress> */}
             </div>
             {/* controls line 2 */}
-            <div className="flex justify-between w-full px-2 h-fit">
+            <div className="flex justify-between w-full md:px-2 h-fit">
               {/* play pause and duration */}
-              <div className="flex gap-4">
+              <div className="flex md:gap-4">
                 {/* play/pause */}
                 <button
                   className="cursor-pointer bg-transparent"
@@ -194,7 +194,7 @@ function VideoPlayer({
                   {isVideoPlaying ? <PauseSVG /> : <PlaySVG />}
                 </button>
                 {/* duration */}
-                <div>
+                <div className="hidden md:block">
                   {timeFormat(videoRef.current.currentTime)}/
                   {timeFormat(videoDuration || 0)}
                 </div>
@@ -210,9 +210,24 @@ function VideoPlayer({
                 {/*   <LoopSVG /> */}
                 {/* </button> */}
                 {/* volume */}
-                <button onClick={handleVideoVolume}>
-                  {!isVideoMuted ? <VolumeSVG /> : <VolumeMutedSVG />}
-                </button>
+                <div className="group/vol flex items-center">
+                  <button onClick={handleVideoVolume}>
+                    {!isVideoMuted ? <VolumeSVG /> : <VolumeMutedSVG />}
+                  </button>
+                  <div className="hidden md:group-hover/vol:inline-block">
+                    <input
+                      className="w-0 border-2 mx-2 group-hover/vol:w-24 duration-400"
+                      type="range"
+                      value={videoRef.current.volume * 100}
+                      min={0}
+                      max={100}
+                      onChange={(e) => {
+                        videoRef.current!.volume =
+                          parseInt(e.target.value) / 100;
+                      }}
+                    />
+                  </div>
+                </div>
                 {/* fullscreen */}
                 <button
                   id="fullscreen"

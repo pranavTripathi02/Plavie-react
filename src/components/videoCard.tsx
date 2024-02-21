@@ -48,7 +48,7 @@ function VideoCard({
       <div className="flex flex-col justify-between px-2 my-2">
         <h5 className="">{title}</h5>
         <button
-          className="lg:hidden block text-left flex gap-4"
+          className="lg:hidden block text-left flex gap-4 items-center"
           onClick={(e) => {
             e.preventDefault();
             handleShowPlaylistModal();

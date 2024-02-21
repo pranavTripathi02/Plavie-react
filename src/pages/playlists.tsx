@@ -6,6 +6,7 @@ import { CreateNewPlaylist } from "../components/addToPlaylistsModal";
 import LeftArrowSVG from "../assets/leftArrow.svg?react";
 import PencilSVG from "../assets/pencil.svg?react";
 import TrashSVG from "../assets/trash.svg?react";
+import CheckSVG from "../assets/check.svg?react";
 // import UnderDevelopment from "./underDevelopment";
 
 function Playlists() {
@@ -15,11 +16,15 @@ function Playlists() {
     setCurrentPlaylist,
     addPlaylist,
     removePlaylist,
+    updatePlaylist,
   } = usePlaylistContext();
 
   const [createNewPlaylist, setCreateNewPlaylist] = useState(false);
   const [playlistView, setPlaylistView] = useState(false);
   const [editPlaylistName, setEditPlaylistName] = useState(false);
+  const [playlistNewName, setPlaylistNewName] = useState<string | undefined>(
+    "",
+  );
 
   const changeCreateNewPlaylistStatus = () => {
     setCreateNewPlaylist((prev) => !prev);
@@ -36,10 +41,18 @@ function Playlists() {
     const selectedPlaylist =
       playlists.find((playlist) => playlist.playlistId === playlistId) || null;
     setCurrentPlaylist(selectedPlaylist);
+    setPlaylistNewName(selectedPlaylist?.playlistName);
     setPlaylistView(true);
   };
   const handleEditPlaylist = () => {
-    console.log("name");
+    if (currentPlaylist && playlistNewName) {
+      currentPlaylist.playlistName = playlistNewName;
+      updatePlaylist({
+        playlistId: currentPlaylist.playlistId,
+        playlist: currentPlaylist,
+      });
+    }
+    setEditPlaylistName(false);
   };
   const handleRemovePlaylist = (playlistId: number) => {
     removePlaylist(playlistId);
@@ -51,9 +64,10 @@ function Playlists() {
     <div>
       <h1 className="mb-8">Playlists</h1>
       {playlistView && currentPlaylist ? (
-        <div className="flex flex-col">
+        <>
+          {/* go back button */}
           <button
-            className="flex gap-4"
+            className="flex gap-4 my-8"
             onClick={() => {
               setPlaylistView(false);
               // navigate(-1);
@@ -62,36 +76,55 @@ function Playlists() {
             <LeftArrowSVG />
             <span>Back to playlists</span>
           </button>
-          <div className="px-4 flex justify-between">
-            {editPlaylistName ? (
-              <input
-                type="text"
-                className="bg-[var(--secondary)] my-4 p-2 rounded-xl"
-                value={currentPlaylist.playlistName}
-                onChange={(e) => {
-                  currentPlaylist.playlistName = e.target.value;
-                }}
-              />
-            ) : (
-              <h3 className="my-4">{currentPlaylist.playlistName}</h3>
-            )}
-            <div className="flex gap-8">
-              <button
-                title="Edit Playlist"
-                onClick={() => setEditPlaylistName((prev) => !prev)}
-              >
-                <PencilSVG />
-              </button>
-              <button
-                title="Delete Playlist"
-                onClick={() => handleRemovePlaylist(currentPlaylist.playlistId)}
-              >
-                <TrashSVG />
-              </button>
+          <div className="flex flex-col md:flex-row">
+            {/* playlist info */}
+            <div className="md:w-1/3">
+              <div className="px-4 flex justify-between">
+                {editPlaylistName ? (
+                  <input
+                    type="text"
+                    className="bg-[var(--secondary)] my-4 p-2 rounded-xl w-2/3"
+                    value={playlistNewName}
+                    onChange={(e) => setPlaylistNewName(e.target.value)}
+                  />
+                ) : (
+                  <h3 className="my-4 overflow-hidden">
+                    {currentPlaylist.playlistName}
+                  </h3>
+                )}
+                <div className="flex gap-8">
+                  {editPlaylistName ? (
+                    <button
+                      title="Save Playlist Name"
+                      onClick={() => handleEditPlaylist()}
+                    >
+                      <CheckSVG />
+                    </button>
+                  ) : (
+                    <button
+                      title="Edit Playlist"
+                      onClick={() => setEditPlaylistName((prev) => !prev)}
+                    >
+                      <PencilSVG />
+                    </button>
+                  )}
+                  <button
+                    title="Delete Playlist"
+                    onClick={() =>
+                      handleRemovePlaylist(currentPlaylist.playlistId)
+                    }
+                  >
+                    <TrashSVG />
+                  </button>
+                </div>
+              </div>
+            </div>
+            {/* playlist contents */}
+            <div className="flex flex-col md:w-2/3">
+              <DraggableQueue />
             </div>
           </div>
-          <DraggableQueue />
-        </div>
+        </>
       ) : (
         <div className="flex flex-col gap-4 mb-8">
           {playlists &&

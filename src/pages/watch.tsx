@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useVideosContext from "../hooks/useVideosContext";
-// import { useState } from "react";
+import { useState } from "react";
 // import { TVideo } from "../types";
 import {
   NextUpQueue,
@@ -10,6 +10,7 @@ import {
 import usePlaylistContext from "../hooks/usePlaylistContext";
 
 function Watch() {
+  const [autoPlay, setAutoPlay] = useState(true);
   const { videoList } = useVideosContext();
   const { playlists, setCurrentPlaylist, currentPlaylist } =
     usePlaylistContext();
@@ -88,7 +89,7 @@ function Watch() {
 
   const navigate = useNavigate();
   const handleVideoEnded = () => {
-    if (currentPlaylist) {
+    if (currentPlaylist && autoPlay) {
       currentPlaylist.playlistIdx =
         (currentPlaylist.playlistIdx + 1) %
         currentPlaylist.playlistContents!.length;
@@ -98,8 +99,6 @@ function Watch() {
           currentPlaylist.playlistContents!.length
         }`,
       );
-    } else {
-      navigate("/");
     }
   };
 
@@ -125,6 +124,17 @@ function Watch() {
       <div className="md:flex w-full">
         {/* playlist queue */}
         <div className="md:w-2/3">
+          <div className="relative flex items-center w-8 rounded-full cursor-pointer">
+            <label className="flex gap-4">
+              <span>Autoplay</span>
+              <input
+                type="checkbox"
+                className="border-2 w-4 cursor-pointer outline-none"
+                checked={autoPlay}
+                onChange={() => setAutoPlay((prev) => !prev)}
+              />
+            </label>
+          </div>
           <NextUpQueue />
         </div>
         <hr className="border-r border-black h-full mx-4" />

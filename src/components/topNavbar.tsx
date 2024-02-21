@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Moon from "../assets/moon.svg?react";
 import Sun from "../assets/sun.svg?react";
 import Video from "../assets/video.svg?react";
 import { getTheme, setTheme } from "../utils/toggleTheme";
 import { Link } from "react-router-dom";
+import useVideosContext from "../hooks/useVideosContext";
+import useDebounce from "../hooks/useDebounce";
 
 function TopNavbar() {
   const [currentTheme, setCurrentTheme] = useState(getTheme());
+  const { setVideoSearch } = useVideosContext();
   const [search, setSearch] = useState("");
+  const debouncedSearchTerm = useDebounce(search.toLowerCase());
+
+  useEffect(() => {
+    setVideoSearch(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
 
   const handleThemeChange = () => {
     if (currentTheme === "dark") {

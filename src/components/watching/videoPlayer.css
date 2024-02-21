@@ -7,9 +7,9 @@ input[type=range] {
 	border:none;
 	background: linear-gradient(to right,var(--accent), var(--accent));
 	/* background: var(--accent); */
-	height:1px;
+	height:8px;
 	background-repeat: no-repeat;
-	/* background-size: 0% 70%; */
+	background-size: 0% 70%;
 	/* margin-right: 15px; */
 	/* width: 200px; */
 	/* height: 7px; */
@@ -26,9 +26,13 @@ input[type=range]::-moz-range-track,
 input[type=range]::-webkit-slider-runnable-track {
 	-webkit-appearance: none;
 	cursor: pointer;
-	background: var(--secondary);
+	/* background: var(--secondary); */
+	/* background: none; */
+	height:8px;
+	background-repeat: no-repeat;
 	box-shadow:none;
-	border:none;
+	border:1px solid var(--secondary);
+	border-radius: 10px;
 }
 
 input[type=range]::-moz-range-thumb,
@@ -41,4 +45,7 @@ input[type="range"]::-webkit-slider-thumb {
 	background: var(--accent);
 	border: none;
 	transition: background 1s ease-out;
+}
+video::-webkit-media-controls-enclosure {
+  display:none !important;
 }

@@ -1,29 +1,24 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 
 export type TPlaylist = {
+  playlistThumb?: string;
   playlistId: number;
   playlistIdx: number;
   playlistName: string;
-  playlistContents?: number[];
+  playlistContents: number[];
 };
 type TPlaylistContext = {
   currentPlaylist: TPlaylist | null;
   playlists: TPlaylist[];
   setCurrentPlaylist: React.Dispatch<React.SetStateAction<TPlaylist | null>>;
   addPlaylist: ({ playlistName }: { playlistName: string }) => void;
-  changePlaylistContent: ({
-    videoId,
+  removePlaylist: (playlistId: number) => void;
+  updatePlaylist: ({
     playlistId,
-  }: {
-    videoId: number;
-    playlistId: number;
-  }) => void;
-  updatePlaylistOrder: ({
-    playlistId,
-    newPlaylistContents,
+    playlist,
   }: {
     playlistId: number;
-    newPlaylistContents: number[];
+    playlist: TPlaylist;
   }) => void;
 };
 
@@ -35,33 +30,53 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
     null,
   );
 
-  // add/remove videoid from existing playlist
-  const changePlaylistContent = ({
-    videoId,
+  const updatePlaylist = ({
     playlistId,
+    playlist,
   }: {
-    videoId: number;
     playlistId: number;
+    playlist: TPlaylist;
   }) => {
-    const playlist = playlists.find(
-      (playlist) => playlist.playlistId === playlistId,
+    const playlistFound = playlists.find(
+      (playlist) => playlist.playlistId == playlistId,
     );
-    const videoFound = playlist?.playlistContents?.includes(videoId);
-    if (!playlist) return;
-    if (videoFound) {
-      const newPlaylistContents = playlist.playlistContents!.filter(
-        (id) => id !== videoId,
-      );
-      playlist.playlistContents = newPlaylistContents;
+    if (!playlistFound) {
+      throw new Error("Invalid playlist Id");
     } else {
-      if (!playlist.playlistContents) {
-        playlist.playlistContents = [videoId];
-      } else {
-        playlist?.playlistContents?.push(videoId);
-      }
+      playlistFound.playlistName = playlist.playlistName;
+      playlistFound.playlistIdx = playlist.playlistIdx;
+      playlistFound.playlistThumb = playlist.playlistThumb;
+      playlistFound.playlistContents = playlist.playlistContents;
     }
     updateLocalStoragePlaylist();
   };
+  // add/remove videoid from existing playlist
+  // const changePlaylistContent = ({
+  //   videoId,
+  //   playlistId,
+  // }: {
+  //   videoId: number;
+  //   playlistId: number;
+  // }) => {
+  //   const playlist = playlists.find(
+  //     (playlist) => playlist.playlistId === playlistId,
+  //   );
+  //   const videoFound = playlist?.playlistContents?.includes(videoId);
+  //   if (!playlist) return;
+  //   if (videoFound) {
+  //     const newPlaylistContents = playlist.playlistContents!.filter(
+  //       (id) => id !== videoId,
+  //     );
+  //     playlist.playlistContents = newPlaylistContents;
+  //   } else {
+  //     if (!playlist.playlistContents) {
+  //       playlist.playlistContents = [videoId];
+  //     } else {
+  //       playlist?.playlistContents?.push(videoId);
+  //     }
+  //   }
+  //   updateLocalStoragePlaylist();
+  // };
   // add new playlist
   const addPlaylist = ({ playlistName }: { playlistName: string }) => {
     // console.log(playlistName);
@@ -69,6 +84,7 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
       playlistId: Date.now(),
       playlistName,
       playlistIdx: 0,
+      playlistContents: [],
     };
     // append new playlist to localstorage else, create new key
     if (playlists?.length) {
@@ -78,19 +94,13 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
     }
     updateLocalStoragePlaylist();
   };
-
-  const updatePlaylistOrder = ({
-    playlistId,
-    newPlaylistContents,
-  }: {
-    playlistId: number;
-    newPlaylistContents: number[];
-  }) => {
-    const playlist = playlists.find(
-      (playlistItem) => playlistItem.playlistId === playlistId,
+  // remove playlist
+  const removePlaylist = (playlistId: number) => {
+    const newPlaylists = playlists.filter(
+      (playlist) => playlist.playlistId != playlistId,
     );
-    if (!playlist) return;
-    playlist.playlistContents = newPlaylistContents;
+    setPlaylists(newPlaylists);
+    updateLocalStoragePlaylist();
   };
 
   const updateLocalStoragePlaylist = () => {
@@ -110,10 +120,10 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
       value={{
         playlists,
         addPlaylist,
+        removePlaylist,
         currentPlaylist,
         setCurrentPlaylist,
-        changePlaylistContent,
-        updatePlaylistOrder,
+        updatePlaylist,
       }}
     >
       {children}

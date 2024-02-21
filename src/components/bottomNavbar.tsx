@@ -12,7 +12,7 @@ function BottomNavbar() {
   // console.log("hi");
   return (
     <>
-      <nav className="flex md:hidden justify-between w-full px-2 py-4 fixed bottom-0 bg-[var(--bg)]">
+      <nav className="flex md:hidden justify-between w-full px-16 py-4 fixed bottom-0 bg-[var(--bg)] z-20">
         <Link
           to="/watch"
           className={`${

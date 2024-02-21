@@ -4,14 +4,27 @@ import DraggableQueue from "../components/draggableQueue";
 import { useState } from "react";
 import { CreateNewPlaylist } from "../components/addToPlaylistsModal";
 import LeftArrowSVG from "../assets/leftArrow.svg?react";
+import PencilSVG from "../assets/pencil.svg?react";
+import TrashSVG from "../assets/trash.svg?react";
+import CheckSVG from "../assets/check.svg?react";
 // import UnderDevelopment from "./underDevelopment";
 
 function Playlists() {
-  const { playlists, currentPlaylist, setCurrentPlaylist, addPlaylist } =
-    usePlaylistContext();
+  const {
+    playlists,
+    currentPlaylist,
+    setCurrentPlaylist,
+    addPlaylist,
+    removePlaylist,
+    updatePlaylist,
+  } = usePlaylistContext();
 
   const [createNewPlaylist, setCreateNewPlaylist] = useState(false);
   const [playlistView, setPlaylistView] = useState(false);
+  const [editPlaylistName, setEditPlaylistName] = useState(false);
+  const [playlistNewName, setPlaylistNewName] = useState<string | undefined>(
+    "",
+  );
 
   const changeCreateNewPlaylistStatus = () => {
     setCreateNewPlaylist((prev) => !prev);
@@ -28,16 +41,33 @@ function Playlists() {
     const selectedPlaylist =
       playlists.find((playlist) => playlist.playlistId === playlistId) || null;
     setCurrentPlaylist(selectedPlaylist);
+    setPlaylistNewName(selectedPlaylist?.playlistName);
     setPlaylistView(true);
+  };
+  const handleEditPlaylist = () => {
+    if (currentPlaylist && playlistNewName) {
+      currentPlaylist.playlistName = playlistNewName;
+      updatePlaylist({
+        playlistId: currentPlaylist.playlistId,
+        playlist: currentPlaylist,
+      });
+    }
+    setEditPlaylistName(false);
+  };
+  const handleRemovePlaylist = (playlistId: number) => {
+    removePlaylist(playlistId);
+    setPlaylistView(false);
+    setEditPlaylistName(false);
   };
 
   return (
     <div>
       <h1 className="mb-8">Playlists</h1>
       {playlistView && currentPlaylist ? (
-        <div className="flex flex-col">
+        <>
+          {/* go back button */}
           <button
-            className="flex gap-4"
+            className="flex gap-4 my-8"
             onClick={() => {
               setPlaylistView(false);
               // navigate(-1);
@@ -46,8 +76,55 @@ function Playlists() {
             <LeftArrowSVG />
             <span>Back to playlists</span>
           </button>
-          <DraggableQueue />
-        </div>
+          <div className="flex flex-col md:flex-row">
+            {/* playlist info */}
+            <div className="md:w-1/3">
+              <div className="px-4 flex justify-between">
+                {editPlaylistName ? (
+                  <input
+                    type="text"
+                    className="bg-[var(--secondary)] my-4 p-2 rounded-xl w-2/3"
+                    value={playlistNewName}
+                    onChange={(e) => setPlaylistNewName(e.target.value)}
+                  />
+                ) : (
+                  <h3 className="my-4 overflow-hidden">
+                    {currentPlaylist.playlistName}
+                  </h3>
+                )}
+                <div className="flex gap-8">
+                  {editPlaylistName ? (
+                    <button
+                      title="Save Playlist Name"
+                      onClick={() => handleEditPlaylist()}
+                    >
+                      <CheckSVG />
+                    </button>
+                  ) : (
+                    <button
+                      title="Edit Playlist"
+                      onClick={() => setEditPlaylistName((prev) => !prev)}
+                    >
+                      <PencilSVG />
+                    </button>
+                  )}
+                  <button
+                    title="Delete Playlist"
+                    onClick={() =>
+                      handleRemovePlaylist(currentPlaylist.playlistId)
+                    }
+                  >
+                    <TrashSVG />
+                  </button>
+                </div>
+              </div>
+            </div>
+            {/* playlist contents */}
+            <div className="flex flex-col md:w-2/3">
+              <DraggableQueue />
+            </div>
+          </div>
+        </>
       ) : (
         <div className="flex flex-col gap-4 mb-8">
           {playlists &&
@@ -55,10 +132,20 @@ function Playlists() {
               return (
                 <div
                   key={playlist.playlistId}
-                  className="flex flex-col bg-[var(--secondary-2)] gap-4 px-4 py-4 rounded-xl cursor-pointer hover:bg-[var(--secondary)]"
+                  className="flex bg-[var(--secondary-2)] gap-4 px-4 py-4 rounded-xl cursor-pointer hover:bg-[var(--secondary)]"
                   onClick={() => handleChoosePlaylist(playlist.playlistId)}
                 >
-                  {playlist.playlistName}
+                  <img
+                    src={playlist.playlistThumb}
+                    // srcSet=""
+                    alt=""
+                    height={120}
+                    width={160}
+                    onError={(e) => {
+                      e.currentTarget.src;
+                    }}
+                  />
+                  <h4>{playlist.playlistName}</h4>
                 </div>
               );
             })}
@@ -71,7 +158,7 @@ function Playlists() {
             <CreateNewPlaylist handleAddNewPlaylist={handleAddNewPlaylist} />
           )}
           <button
-            className="mx-4 my-2 px-2 py-1 w-fit rounded-lg bg-[var(--secondary-2)]"
+            className="self-end mx-4 my-2 px-4 py-4 w-fit rounded-lg bg-[var(--secondary-2)]"
             onClick={changeCreateNewPlaylistStatus}
           >
             {createNewPlaylist ? "Cancel" : "Create new playlist"}

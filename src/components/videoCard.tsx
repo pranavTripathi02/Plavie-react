@@ -33,7 +33,7 @@ function VideoCard({
           width={480}
         />
         <button
-          className="absolute scale-0 group-hover:scale-100 bottom-4 right-4 text-white bg-black/50 rounded-lg"
+          className="hidden lg:block absolute scale-0 group-hover:scale-100 bottom-4 right-4 text-white bg-black/50 rounded-lg"
           onClick={(e) => {
             e.preventDefault();
             handleShowPlaylistModal();
@@ -45,8 +45,21 @@ function VideoCard({
           />
         </button>
       </div>
-      <div>
-        <h5 className="px-2 my-2">{title}</h5>
+      <div className="flex flex-col justify-between px-2 my-2">
+        <h5 className="">{title}</h5>
+        <button
+          className="lg:hidden block text-left flex gap-4 items-center"
+          onClick={(e) => {
+            e.preventDefault();
+            handleShowPlaylistModal();
+          }}
+        >
+          Add to playlist
+          <PlaylistAdd
+            height={24}
+            width={24}
+          />
+        </button>
       </div>
       {/* video title */}
     </Link>

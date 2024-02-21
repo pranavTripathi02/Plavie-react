@@ -10,8 +10,7 @@ import { TVideo } from "../types";
 // import { TPlaylist } from "../context/playlistContext";
 
 function DraggableQueue() {
-  const { playlists, currentPlaylist, updatePlaylistOrder } =
-    usePlaylistContext();
+  const { playlists, currentPlaylist, updatePlaylist } = usePlaylistContext();
   const playlistQueue = currentPlaylist?.playlistContents;
   // const navigate = useNavigate();
 
@@ -44,8 +43,10 @@ function DraggableQueue() {
     str: "start" | "end",
   ) => {
     if (str === "start") {
+      console.log("adding", e.currentTarget.closest(".queueItem"));
       e.currentTarget.closest(".queueItem")?.classList.add("draggingOver");
     } else {
+      console.log("removing", e.currentTarget.closest(".queueItem"));
       e.currentTarget.closest(".queueItem")?.classList.remove("draggingOver");
     }
   };
@@ -59,7 +60,7 @@ function DraggableQueue() {
         e.currentTarget.closest(".queueItem")?.querySelector(".queue-index")
           ?.innerHTML || "",
       );
-      setDraggingItemIdx(newDraggingItem);
+      setDraggingItemIdx(playlistQueue!.indexOf(newDraggingItem));
 
       e.currentTarget.classList.add("dragging");
     } else {
@@ -71,17 +72,64 @@ function DraggableQueue() {
     const newIdxString = e.currentTarget
       .closest(".queueItem")
       ?.querySelector(".queue-index")?.innerHTML;
-    const newIdx = parseInt(newIdxString!);
+    const newIdx = playlistQueue!.indexOf(parseInt(newIdxString!));
+    const oldIdx = draggingItemIdx!;
+    // console.log(newIdx, newIdxString, draggingItemIdx);
 
-    const newQueue = playlistQueue!.map((playlistItem) => {
-      if (playlistItem === draggingItemIdx) playlistItem = newIdx;
-      else if (playlistItem === newIdx) playlistItem = draggingItemIdx!;
-      return playlistItem;
-    });
+    // const newQueue = playlistQueue!.map((playlistItem) => {
+    //   if (playlistItem === draggingItemIdx) playlistItem = newIdx;
+    //   else if (playlistItem === newIdx) playlistItem = draggingItemIdx!;
+    //   return playlistItem;
+    // });
+    //
+    const rotateArr = (arr: number[], oldIdx: number, newIdx: number) => {
+      const reorderForwards = (
+        arr: number[],
+        oldIdx: number,
+        newIdx: number,
+      ) => {
+        const temp = arr[oldIdx];
 
-    updatePlaylistOrder({
+        for (let i = oldIdx; i < newIdx; i++) {
+          arr[i] = arr[i + 1];
+        }
+        arr[newIdx - 1] = temp;
+
+        return arr;
+      };
+      const reorderReverse = (
+        arr: number[],
+        oldIdx: number,
+        newIdx: number,
+      ) => {
+        const temp = arr[oldIdx];
+        for (let i = oldIdx; i > newIdx; i--) {
+          arr[i] = arr[i - 1];
+        }
+        arr[newIdx] = temp;
+        return arr;
+      };
+      if (oldIdx < newIdx) {
+        return reorderForwards(arr, oldIdx, newIdx);
+      } else {
+        return reorderReverse(arr, oldIdx, newIdx);
+      }
+    };
+    let newQueue = playlistQueue!;
+    newQueue = rotateArr(newQueue, oldIdx, newIdx);
+
+    currentPlaylist.playlistContents = newQueue;
+    // if (newIdx < oldIdx) {
+    //   rotateArr(newQueue, oldIdx, newIdx);
+    // } else {
+    //   rotateArr(newQueue, oldIdx, newIdx);
+    // }
+
+    // const newQueue = playlistQueue!;
+
+    updatePlaylist({
       playlistId: currentPlaylist.playlistId,
-      newPlaylistContents: newQueue,
+      playlist: currentPlaylist,
     });
 
     setDraggingItemIdx(null);
@@ -94,13 +142,12 @@ function DraggableQueue() {
           currentPlaylist.playlistContents?.indexOf(video.id) || 0;
         return (
           <div
-            className="queueItem"
+            className="queueItem duration-100"
             key={video.id}
             draggable={true}
-            // dragover used to recheck hover
-            // onDragOver={(e) => handleDragBehind(e, "start")}
-            onDragLeave={(e) => handleDragBehind(e, "end")}
             onDragStart={(e) => handleDrag(e, "start")}
+            onDragEnter={(e) => handleDragBehind(e, "start")}
+            onDragLeave={(e) => handleDragBehind(e, "end")}
             onDragEnd={(e) => handleDrag(e, "end")}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => handleDrop(e)}
@@ -141,11 +188,12 @@ function DraggableQueue() {
                     <img
                       src={`${baseUrl}${video.thumb}`}
                       alt="video thumbnail"
-                      width="100"
+                      width={96}
+                      height={72}
                     />
                   </div>
                   {/* video title */}
-                  <div>
+                  <div className="w-1/3">
                     <span>{video.title}</span>
                   </div>
                   {/* for consistent styling */}

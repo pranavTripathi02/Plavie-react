@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 
 export type TPlaylist = {
+  playlistThumb?: string;
   playlistId: number;
   playlistIdx: number;
   playlistName: string;
@@ -11,6 +12,7 @@ type TPlaylistContext = {
   playlists: TPlaylist[];
   setCurrentPlaylist: React.Dispatch<React.SetStateAction<TPlaylist | null>>;
   addPlaylist: ({ playlistName }: { playlistName: string }) => void;
+  removePlaylist: (playlistId: number) => void;
   changePlaylistContent: ({
     videoId,
     playlistId,
@@ -78,6 +80,13 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
     }
     updateLocalStoragePlaylist();
   };
+  const removePlaylist = (playlistId: number) => {
+    const newPlaylists = playlists.filter(
+      (playlist) => playlist.playlistId != playlistId,
+    );
+    setPlaylists(newPlaylists);
+    updateLocalStoragePlaylist();
+  };
 
   const updatePlaylistOrder = ({
     playlistId,
@@ -110,6 +119,7 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
       value={{
         playlists,
         addPlaylist,
+        removePlaylist,
         currentPlaylist,
         setCurrentPlaylist,
         changePlaylistContent,

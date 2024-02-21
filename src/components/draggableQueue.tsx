@@ -59,7 +59,7 @@ function DraggableQueue() {
         e.currentTarget.closest(".queueItem")?.querySelector(".queue-index")
           ?.innerHTML || "",
       );
-      setDraggingItemIdx(newDraggingItem);
+      setDraggingItemIdx(playlistQueue!.indexOf(newDraggingItem));
 
       e.currentTarget.classList.add("dragging");
     } else {
@@ -71,13 +71,58 @@ function DraggableQueue() {
     const newIdxString = e.currentTarget
       .closest(".queueItem")
       ?.querySelector(".queue-index")?.innerHTML;
-    const newIdx = parseInt(newIdxString!);
+    const newIdx = playlistQueue!.indexOf(parseInt(newIdxString!));
+    const oldIdx = draggingItemIdx!;
+    // console.log(newIdx, newIdxString, draggingItemIdx);
 
-    const newQueue = playlistQueue!.map((playlistItem) => {
-      if (playlistItem === draggingItemIdx) playlistItem = newIdx;
-      else if (playlistItem === newIdx) playlistItem = draggingItemIdx!;
-      return playlistItem;
-    });
+    // const newQueue = playlistQueue!.map((playlistItem) => {
+    //   if (playlistItem === draggingItemIdx) playlistItem = newIdx;
+    //   else if (playlistItem === newIdx) playlistItem = draggingItemIdx!;
+    //   return playlistItem;
+    // });
+    //
+    const rotateArr = (arr: number[], oldIdx: number, newIdx: number) => {
+      const reorderForwards = (
+        arr: number[],
+        oldIdx: number,
+        newIdx: number,
+      ) => {
+        const temp = arr[oldIdx];
+
+        for (let i = oldIdx; i < newIdx; i++) {
+          arr[i] = arr[i + 1];
+        }
+        arr[newIdx - 1] = temp;
+
+        return arr;
+      };
+      const reorderReverse = (
+        arr: number[],
+        oldIdx: number,
+        newIdx: number,
+      ) => {
+        const temp = arr[oldIdx];
+        for (let i = oldIdx; i > newIdx; i--) {
+          arr[i] = arr[i - 1];
+        }
+        arr[newIdx] = temp;
+        return arr;
+      };
+      if (oldIdx < newIdx) {
+        return reorderForwards(arr, oldIdx, newIdx);
+      } else {
+        return reorderReverse(arr, oldIdx, newIdx);
+      }
+    };
+    let newQueue = playlistQueue!;
+    newQueue = rotateArr(newQueue, oldIdx, newIdx);
+    // if (newIdx < oldIdx) {
+    //   rotateArr(newQueue, oldIdx, newIdx);
+    // } else {
+    //   rotateArr(newQueue, oldIdx, newIdx);
+    // }
+
+    // const newQueue = playlistQueue!;
 
     updatePlaylistOrder({
       playlistId: currentPlaylist.playlistId,

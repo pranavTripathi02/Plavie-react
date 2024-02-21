@@ -2,7 +2,10 @@ import { Link } from "react-router-dom";
 import { TVideo } from "../types";
 import baseUrl from "../api/baseUrl";
 // import useVideosContext from "../hooks/useVideosContext";
-import PlaylistAdd from "../assets/playlistAdd.svg?react";
+import PlaySVG from "../assets/play.svg?react";
+import PlaylistAddSVG from "../assets/playlistAdd.svg?react";
+import VerticalMenuDotsSVG from "../assets/verticalMenuDots.svg?react";
+import { useState } from "react";
 
 function VideoCard({
   videoInfo,
@@ -11,7 +14,8 @@ function VideoCard({
   videoInfo: TVideo;
   handleShowPlaylistModal: () => void;
 }) {
-  const { thumb, title, id } = videoInfo;
+  const [showMenu, setShowMenu] = useState(false);
+  const { thumb, title, subtitle, id } = videoInfo;
   // const { setCurrentVideo } = useVideosContext();
   // const handleVideo = () => {
   //   setCurrentVideo({ id });
@@ -20,7 +24,7 @@ function VideoCard({
   return (
     <Link
       to={`/watch?vid=${id}`}
-      className="flex flex-col hover:text-[var(--accent)] duration-300"
+      className="flex flex-col group/card"
       // onClick={handleVideo}
     >
       {/* video thumbnail */}
@@ -28,38 +32,73 @@ function VideoCard({
         <img
           src={`${baseUrl}${thumb}`}
           alt={`Video thumbnail for video titled ${title}`}
-          className="object-cover hover:scale-105 duration-300"
+          className="object-cover hover:scale-105 duration-300 mx-auto bg-black w-full"
           height={360}
           width={480}
         />
         <button
-          className="hidden lg:block absolute scale-0 group-hover:scale-100 bottom-4 right-4 text-white bg-black/50 rounded-lg"
+          className="hidden md:block absolute bottom-4 group-hover:translate-x-0 right-0 translate-x-full duration-300 hover:text-[var(--accent)] bg-[var(--secondary-2)] rounded-md flex w-fit flex-row px-4"
           onClick={(e) => {
             e.preventDefault();
             handleShowPlaylistModal();
           }}
         >
-          <PlaylistAdd
-            height={48}
-            width={48}
-          />
+          <div className="w-full h-fit flex shadow-2xl items-center gap-4">
+            <span>Add to playlist</span>
+            <PlaylistAddSVG
+              height={32}
+              width={32}
+            />
+          </div>
         </button>
       </div>
-      <div className="flex flex-col justify-between px-2 my-2">
-        <h5 className="">{title}</h5>
-        <button
-          className="lg:hidden block text-left flex gap-4 items-center"
-          onClick={(e) => {
-            e.preventDefault();
-            handleShowPlaylistModal();
-          }}
-        >
-          Add to playlist
-          <PlaylistAdd
-            height={24}
-            width={24}
-          />
-        </button>
+      <div className="flex flex-col group/title justify-between px-2 my-2">
+        <div className="flex justify-between w-full ">
+          <div>
+            <h5 className="">{title}</h5>
+            <span className="opacity-50">{subtitle}</span>
+          </div>
+          <button
+            className="md:hidden relative md:group-hover/card:block"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowMenu((prev) => !prev);
+            }}
+          >
+            <VerticalMenuDotsSVG />
+            {showMenu && (
+              <div
+                onMouseLeave={() => setShowMenu(false)}
+                className="absolute bg-[var(--secondary-2)] w-[200px] h-fit py-4 px-4 right-0 bottom-8 rounded-lg text-[var(--text)] flex flex-col justify-start text-left gap-4"
+              >
+                <Link
+                  to={`/watch?vid=${id}`}
+                  className="flex gap-4 border-b border-black pb-2 hover:text-[var(--accent)]"
+                  // onClick={handleVideo}
+                >
+                  <PlaySVG
+                    height={24}
+                    width={24}
+                  />
+                  Play
+                </Link>
+                <button
+                  className="flex gap-4 hover:text-[var(--accent)]"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleShowPlaylistModal();
+                  }}
+                >
+                  <PlaylistAddSVG
+                    height={24}
+                    width={24}
+                  />
+                  Add to playlist
+                </button>
+              </div>
+            )}
+          </button>
+        </div>
       </div>
       {/* video title */}
     </Link>

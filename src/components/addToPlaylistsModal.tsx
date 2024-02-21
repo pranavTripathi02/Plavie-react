@@ -3,8 +3,7 @@ import CloseSVG from "../assets/close.svg?react";
 import CheckSVG from "../assets/check.svg?react";
 import { useState } from "react";
 import { TPlaylist } from "../context/playlistContext";
-// import useVideosContext from "../hooks/useVideosContext";
-//
+
 export function CreateNewPlaylist({
   handleAddNewPlaylist,
 }: {
@@ -67,22 +66,17 @@ function AddToPlaylistModal({
 
   const handleAddVideoToPlaylist = (videoId: number, playlist: TPlaylist) => {
     if (!playlist.playlistContents) {
-      console.log("adding new");
       playlist.playlistContents = [videoId];
     } else if (playlist.playlistContents.indexOf(videoId) > -1) {
-      console.log("removing");
       playlist.playlistContents = playlist.playlistContents.filter(
         (id) => id !== videoId,
       );
     } else {
-      console.log("adding");
       playlist.playlistContents.push(videoId);
     }
     updatePlaylist({ playlistId: playlist.playlistId, playlist });
   };
 
-  // const {} = useVideosContext()
-  // console.log(videoId, playlists, addPlaylist);
   return (
     <div className="relative h-full m-auto">
       <div

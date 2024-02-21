@@ -6,29 +6,30 @@
 
 @media (prefers-color-scheme:light) {
 	:root {
-		--bg: #d6d6d6;
+		--bg: #dadada;
 		--text: #000000;
 		--text-alt: #000000;
 		--secondary: #ededed;
-		--secondary-2: #aaa;
+		--secondary-2: #ccc;
 	}
 }
 
 @media (prefers-color-scheme:dark) {
 	:root {
-		--bg: #1f1f1f;
+		--bg: #131313;
 		--text: #9f9f9f;
 		--text-alt: #1f1f1f;
-		--secondary: #444;
-		--secondary-2: #303030;
+		--secondary: #222;
+		--secondary-2: #202020;
 	}
 }
 
 [data-theme='dark'] {
-	--bg: #1f1f1f;
+	--bg: #131313;
 	--text: #9f9f9f;
-	--secondary: #444;
-	--secondary-2: #303030;
+	--text-alt: #1f1f1f;
+	--secondary: #222;
+	--secondary-2: #202020;
 }
 
 /* [data-theme='light'] { */
@@ -41,12 +42,15 @@
 	color-scheme: light dark;
 	/* max-width: 1060px; */
 
-	--accent: #fd22da;
+	/* --accent: #dd22da; */
+	/* --accent: #965dce; */
+	--accent: #51a418;
 
 	background-color: var(--bg);
 	color: var(--text);
 	transition: all .25s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-	/* transition: all .25s cubic-bezier(1, 1.5, 0, -1.5); */ /* tubelight? */
+	/* transition: all .25s cubic-bezier(1, 1.5, 0, -1.5); */
+	/* tubelight? */
 }
 
 body {
@@ -56,15 +60,19 @@ body {
 h1 {
 	font-size: 2.5rem;
 }
+
 h2 {
 	font-size: 2rem;
 }
+
 h3 {
 	font-size: 1.75rem;
 }
+
 h4 {
 	font-size: 1.5rem;
 }
+
 h5 {
 	font-size: 1.25rem;
 }

@@ -23,7 +23,6 @@ function VideoPlayer({
   const [videoDuration, setVideoDuration] = useState<number | null>(null);
   const [videoProgress, setVideoProgress] = useState<number | null>(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  // const [isVideoLoop, setIsVideoLoop] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const handleLoadedMetadata = () => {
     setVideoDuration(videoRef.current!.duration);
@@ -34,7 +33,6 @@ function VideoPlayer({
     if (videoRef) videoRef.current?.focus();
     if (videoMeta) {
       const videoMetaInfo = videoMeta.find((item) => item.id === video.id);
-      // console.log(videoMetaInfo);
       if (videoMetaInfo) {
         // setVideoProgress(videoMetaInfo.timestamp);
         videoRef.current!.currentTime = videoMetaInfo.timestamp;
@@ -43,7 +41,9 @@ function VideoPlayer({
       setVideoProgress(0);
     }
     const saveVideoProgressInterval = setInterval(() => {
-      handleUpdateVideoMeta(video.id, videoRef.current!.currentTime);
+      if (videoDuration && videoProgress && videoDuration - videoProgress <= 10)
+        handleUpdateVideoMeta(video.id, 0);
+      else handleUpdateVideoMeta(video.id, videoRef.current!.currentTime);
     }, 10000);
     return () => clearInterval(saveVideoProgressInterval);
   }, []);
@@ -57,27 +57,12 @@ function VideoPlayer({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // console.log(isVideoPlaying);
-
-  // save video progress every 10 seconds
-  // const handleTimeUpdate = (timeStamp: number) => {
-  //   // console.log(videoProgress);
-  //   setVideoProgress(parseInt(timeStamp.toFixed(0)) / 1000);
-  // };
-
   const handleVideoProgressBarUpdate = () => {
-    // const parsedTime = parseInt((timestamp / 1000).toFixed(0));
-    // console.log(inputRef.current!.style.backgroundSize);
     inputRef.current!.style.backgroundSize =
       (videoProgress! / videoDuration!) * 100 + "%";
-    // console.log(inputRef.current!.style.backgroundSize);
     setVideoProgress(videoRef.current!.currentTime);
   };
   const handleVideoProgressChange = (timeStamp: number) => {
-    // console.log(timeStamp);
-    // const parsedTime = parseInt((timeStamp / 1000).toFixed(0));
-    // const newTime = throttle(() => timeFormat(parsedTime), 1000)();
-    // console.log(videoProgress, videoDuration);
     videoRef.current!.currentTime = timeStamp;
     setVideoProgress(timeStamp);
   };
@@ -86,7 +71,6 @@ function VideoPlayer({
     e: React.KeyboardEvent<HTMLVideoElement>,
   ) => {
     const key = e.key;
-    // console.log(key);
     switch (key) {
       case "ArrowLeft":
       case "j":
@@ -126,12 +110,10 @@ function VideoPlayer({
     }
   };
 
-  // const navigate = useNavigate();
   const videoHasEnded = () => {
-    // console.log("video has ended");
     handleVideoEnded();
-    // navigate("/");
   };
+
   // controls
   // progress bar
   // const handleProgressBar = () => {};
@@ -146,20 +128,13 @@ function VideoPlayer({
       videoRef.current?.play().catch(() => setIsVideoPlaying(false));
     }
   };
-  // video progress
-  // const handleVideoProgress = () => {
-  //   setIsVideoPlaying((prev) => !prev);
-  // };
-  // loop control
-  // const handleVideoLoop = () => {
-  //   // setIsVideoLoop((prev) => !prev);
-  //   isVideoLoop = !isVideoLoop;
-  // };
+
   // speed control
   const handlePlaybackRate = (newPlaybackRate: string) => {
     videoRef.current!.playbackRate = parseFloat(newPlaybackRate);
     setVideoPlaybackRate(parseFloat(newPlaybackRate));
   };
+
   // volume
   const handleVideoVolume = () => {
     if (videoRef.current) {
@@ -167,28 +142,26 @@ function VideoPlayer({
       setIsVideoMuted((prev) => !prev);
     }
   };
+
   // fullscreen
   const handleFullscreenToggle = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     const element = e.currentTarget.closest("figure");
-    console.log(element);
     if (element && !document.fullscreenElement) {
       element.requestFullscreen();
     } else {
       document.exitFullscreen();
     }
     setIsVideoFullscreen((prev) => !prev);
-    // videoRef.current
-    //   ?.requestFullscreen()
-    //   .then(() => setIsVideoFullscreen((prev) => !prev));
   };
+
   return (
     <div>
       <div className="videoBg"></div>
       <figure
         id="videoContainer"
-        className="relative rounded-xl group w-full h-full my-2 bg-black text-white/70"
+        className="relative rounded-xl group my-2 bg-black text-white/70 max-w-[1280px] max-h-[720px] m-auto"
         data-fullscreen={false}
       >
         <video
@@ -204,7 +177,7 @@ function VideoPlayer({
           muted={isVideoMuted}
           title={video.title}
           poster={video.thumb}
-          className="rounded-xl m-auto w-full"
+          className="rounded-xl m-auto h-full w-full"
           height={720}
           width={1280}
           onTimeUpdate={handleVideoProgressBarUpdate}
@@ -277,13 +250,13 @@ function VideoPlayer({
                 {/*   <LoopSVG /> */}
                 {/* </button> */}
                 {/* volume */}
-                <div className="group/vol flex items-center">
+                <div className="group/vol flex items-center w-fit">
                   <button onClick={handleVideoVolume}>
                     {!isVideoMuted ? <VolumeSVG /> : <VolumeMutedSVG />}
                   </button>
-                  <div className="hidden md:group-hover/vol:inline-block">
+                  <div className="md:group-hover/vol:inline-block hover:block overflow-hidden">
                     <input
-                      className="w-0 border-2 mx-2 group-hover/vol:w-24 duration-400"
+                      className="w-0 h-0 translate-x-[5rem] border-2 mx-2 group-hover/vol:w-24 group-hover/vol:translate-x-0 duration-300"
                       type="range"
                       value={videoRef.current.volume * 100}
                       min={0}

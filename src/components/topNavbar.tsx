@@ -33,7 +33,9 @@ function TopNavbar() {
       <div className="flex justify-between items-center gap-12">
         <Link to="/">
           <div className="logo flex gap-1 items-center text-[1.5rem]">
-            <span className="hidden sm:inline-block">PLAYVIE</span>
+            <span className="hidden sm:inline-block font-[Poppins]">
+              PLAYVIE
+            </span>
             <Video
               strokeWidth={1}
               stroke={"var(--accent)"}

@@ -61,7 +61,7 @@ function Playlists() {
   };
 
   return (
-    <div>
+    <div className="sm:w-[600px] md:w-[768px] lg:w-[992px] xl:w-[1024px] mx-auto">
       <h1 className="mb-8">Playlists</h1>
       {playlistView && currentPlaylist ? (
         <>
@@ -78,7 +78,7 @@ function Playlists() {
           </button>
           <div className="flex flex-col md:flex-row">
             {/* playlist info */}
-            <div className="md:w-1/3">
+            <div className="md:w-1/3 bg-gradient-to-b from-transparent from-30% to-[var(--accent)] to-99% ">
               <div className="px-4 flex justify-between">
                 {editPlaylistName ? (
                   <input
@@ -136,13 +136,16 @@ function Playlists() {
                   onClick={() => handleChoosePlaylist(playlist.playlistId)}
                 >
                   <img
+                    className="bg-transparent"
                     src={playlist.playlistThumb}
                     // srcSet=""
                     alt=""
                     height={120}
                     width={160}
                     onError={(e) => {
-                      e.currentTarget.src;
+                      console.log(e);
+                      e.currentTarget.height = 120;
+                      e.currentTarget.width = 120;
                     }}
                   />
                   <h4>{playlist.playlistName}</h4>

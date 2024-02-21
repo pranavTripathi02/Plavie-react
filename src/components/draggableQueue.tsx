@@ -7,29 +7,19 @@ import { useState } from "react";
 import usePlaylistContext from "../hooks/usePlaylistContext";
 import useVideosContext from "../hooks/useVideosContext";
 import { TVideo } from "../types";
-// import { TPlaylist } from "../context/playlistContext";
 
 function DraggableQueue() {
   const { playlists, currentPlaylist, updatePlaylist } = usePlaylistContext();
   const playlistQueue = currentPlaylist?.playlistContents;
-  // const navigate = useNavigate();
 
   const { videoList } = useVideosContext();
   const [draggingItemIdx, setDraggingItemIdx] = useState<number | null>(null);
 
-  // const currentPlaylistVideos = videoList.filter(
-  //   (video) => currentPlaylist?.playlistContents?.includes(video.id),
-  // );
   const currentPlaylistVideos: TVideo[] = [];
-  // currentPlaylistVideos = currentPlaylistVideos.push(
   currentPlaylist?.playlistContents?.forEach((idx) => {
     const foundVideo = videoList.find((item) => item.id === idx);
     if (foundVideo) return currentPlaylistVideos.push(foundVideo);
   });
-  // );
-  // if (!currentPlaylistVideos || currentPlaylistVideos.length < 1)
-  //   currentPlaylistVideos = [];
-  // console.log(currentPlaylist);
 
   if (!currentPlaylist?.playlistId) {
     return <div>No playlist selected</div>;
@@ -42,11 +32,10 @@ function DraggableQueue() {
     e: React.DragEvent<HTMLDivElement>,
     str: "start" | "end",
   ) => {
+    e.stopPropagation();
     if (str === "start") {
-      console.log("adding", e.currentTarget.closest(".queueItem"));
       e.currentTarget.closest(".queueItem")?.classList.add("draggingOver");
     } else {
-      console.log("removing", e.currentTarget.closest(".queueItem"));
       e.currentTarget.closest(".queueItem")?.classList.remove("draggingOver");
     }
   };
@@ -69,19 +58,15 @@ function DraggableQueue() {
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.currentTarget.closest(".queueItem")?.classList.remove("draggingOver");
     const newIdxString = e.currentTarget
       .closest(".queueItem")
       ?.querySelector(".queue-index")?.innerHTML;
     const newIdx = playlistQueue!.indexOf(parseInt(newIdxString!));
     const oldIdx = draggingItemIdx!;
-    // console.log(newIdx, newIdxString, draggingItemIdx);
+    const playlistOldItem =
+      currentPlaylist.playlistContents[currentPlaylist.playlistIdx];
 
-    // const newQueue = playlistQueue!.map((playlistItem) => {
-    //   if (playlistItem === draggingItemIdx) playlistItem = newIdx;
-    //   else if (playlistItem === newIdx) playlistItem = draggingItemIdx!;
-    //   return playlistItem;
-    // });
-    //
     const rotateArr = (arr: number[], oldIdx: number, newIdx: number) => {
       const reorderForwards = (
         arr: number[],
@@ -118,15 +103,11 @@ function DraggableQueue() {
     let newQueue = playlistQueue!;
     newQueue = rotateArr(newQueue, oldIdx, newIdx);
 
+    // update playlist order
     currentPlaylist.playlistContents = newQueue;
-    // if (newIdx < oldIdx) {
-    //   rotateArr(newQueue, oldIdx, newIdx);
-    // } else {
-    //   rotateArr(newQueue, oldIdx, newIdx);
-    // }
-
-    // const newQueue = playlistQueue!;
-
+    // prevent change of currently playing
+    currentPlaylist.playlistIdx =
+      currentPlaylist.playlistContents.indexOf(playlistOldItem);
     updatePlaylist({
       playlistId: currentPlaylist.playlistId,
       playlist: currentPlaylist,
@@ -153,31 +134,27 @@ function DraggableQueue() {
             onDrop={(e) => handleDrop(e)}
           >
             <Link
-              to={`/watch?vid=${video.id}&pid=${
+              to={`/watch?pid=${
                 currentPlaylist.playlistId
               }&pidx=${currentPlaylist.playlistContents?.indexOf(video.id)}`}
               onClick={() => {
                 currentPlaylist.playlistIdx =
-                  (currentPlaylist.playlistContents?.indexOf(video.id) || 0) +
-                  1;
+                  currentPlaylist.playlistContents?.indexOf(video.id) || 0;
                 const findInPlaylists = playlists.find(
                   (it) => it.playlistId === currentPlaylist.playlistId,
                 );
                 if (findInPlaylists)
                   findInPlaylists.playlistIdx = currentPlaylist.playlistIdx;
-                // navigate(
-                //   `/watch?vid=${video.id}&pid=${currentPlaylist.playlistId}&pidx=${currentIdx}`,
-                // );
               }}
             >
               <div
-                className={`relative flex gap-8 items-center my-2 ${
+                className={`relative flex gap-8 items-center my-2 h-full ${
                   currentIdx === currentPlaylist.playlistIdx
                     ? "bg-[var(--text)] text-[var(--bg)]"
                     : "bg-[var(--secondary-2)] text-[var(--text)]"
                 } rounded-md px-4 select-none`}
               >
-                <div className="flex gap-4 items-center z-20">
+                <div className="flex gap-4 items-center z-20 w-full">
                   {/* drag video */}
                   <div className="cursor-grabbing me-2">
                     <span className="hidden queue-index">{video.id}</span>
@@ -188,16 +165,18 @@ function DraggableQueue() {
                     <img
                       src={`${baseUrl}${video.thumb}`}
                       alt="video thumbnail"
-                      width={96}
-                      height={72}
+                      width={120}
+                      height={90}
+                      className="min-h-[90px] min-w-[120px] bg-black m-auto ms-0"
                     />
                   </div>
                   {/* video title */}
-                  <div className="w-1/3">
+                  <div className="w-full flex flex-col">
                     <span>{video.title}</span>
+                    <span className="opacity-50">{video.subtitle}</span>
                   </div>
                   {/* for consistent styling */}
-                  {/* <div className="absolute left-0 right-0 top-0 bottom-0"></div> */}
+                  <div className="absolute left-0 right-0 top-0 bottom-0"></div>
                 </div>
               </div>
             </Link>

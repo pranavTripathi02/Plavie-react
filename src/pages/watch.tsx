@@ -1,7 +1,7 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useVideosContext from "../hooks/useVideosContext";
 import { useState } from "react";
-// import { TVideo } from "../types";
+
 import {
   NextUpQueue,
   SuggestedVideos,
@@ -30,20 +30,16 @@ function Watch() {
       setCurrentPlaylist(null);
     }
   } else if (playlistId) {
-    console.log("here");
     const playlistFound = playlists.find(
       (playlist) => playlist.playlistId === playlistId,
     );
     if (playlistFound) {
       setCurrentPlaylist(playlistFound);
       if (playlistIdx !== undefined && playlistIdx > -1) {
-        console.log("1", playlistFound, playlistIdx);
         videoSelected = videoList.find(
           (video) => video.id === playlistFound.playlistContents[playlistIdx],
         );
-        console.log("12", playlistFound, playlistIdx);
       } else {
-        console.log("2", playlistFound, playlistIdx);
         videoSelected =
           videoList[
             playlistFound.playlistContents
@@ -53,7 +49,6 @@ function Watch() {
       }
     }
   }
-  console.log(currentPlaylist, videoSelected);
 
   const navigate = useNavigate();
 

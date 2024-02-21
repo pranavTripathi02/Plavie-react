@@ -50,36 +50,8 @@ function PlaylistContextProvider({ children }: { children: ReactNode }) {
     }
     updateLocalStoragePlaylist();
   };
-  // add/remove videoid from existing playlist
-  // const changePlaylistContent = ({
-  //   videoId,
-  //   playlistId,
-  // }: {
-  //   videoId: number;
-  //   playlistId: number;
-  // }) => {
-  //   const playlist = playlists.find(
-  //     (playlist) => playlist.playlistId === playlistId,
-  //   );
-  //   const videoFound = playlist?.playlistContents?.includes(videoId);
-  //   if (!playlist) return;
-  //   if (videoFound) {
-  //     const newPlaylistContents = playlist.playlistContents!.filter(
-  //       (id) => id !== videoId,
-  //     );
-  //     playlist.playlistContents = newPlaylistContents;
-  //   } else {
-  //     if (!playlist.playlistContents) {
-  //       playlist.playlistContents = [videoId];
-  //     } else {
-  //       playlist?.playlistContents?.push(videoId);
-  //     }
-  //   }
-  //   updateLocalStoragePlaylist();
-  // };
   // add new playlist
   const addPlaylist = ({ playlistName }: { playlistName: string }) => {
-    // console.log(playlistName);
     const newPlaylist: TPlaylist = {
       playlistId: Date.now(),
       playlistName,

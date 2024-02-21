@@ -9,7 +9,6 @@ function BottomNavbar() {
   useEffect(() => {
     setCurrentPath(location.pathname);
   }, [location]);
-  // console.log("hi");
   return (
     <>
       <nav className="flex md:hidden justify-between w-full px-16 py-4 fixed bottom-0 bg-[var(--bg)] z-20">

@@ -1,13 +1,9 @@
 .draggingOver {
 	background:black;
 	border-top: 5px solid var(--accent);
-	/* opacity: .01; */
-	/* transform: translateY(20px); */
-	/* pointer-events: none; */
 }
 
 .dragging {
 	opacity: .5;
-	/* pointer-events: none; */
 	scale:.80;
 }

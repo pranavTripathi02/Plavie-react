@@ -1,4 +1,3 @@
-// import { TVideo } from "../types";
 import DragSVG from "../assets/drag.svg?react";
 import baseUrl from "../api/baseUrl";
 import "./draggableQueue.css";

@@ -15,8 +15,6 @@ type TVideoMeta = {
 
 type TVideosContext = {
   videoList: TVideo[];
-  // currentVideo: Pick<TVideo, "id"> | null; // for in the case of non-url based video playing
-  // setCurrentVideo: React.Dispatch<SetStateAction<Pick<TVideo, "id"> | null>>;
   videoSearch: string;
   setVideoSearch: React.Dispatch<SetStateAction<string>>;
   videoMeta: TVideoMeta[] | null;
@@ -28,13 +26,9 @@ const VideoContext = createContext<TVideosContext | null>(null);
 function VideoContextProvider({ children }: { children: ReactNode }) {
   const [videoList, setVideoList] = useState<TVideo[]>([]);
   const [videoMeta, setVideoMeta] = useState<TVideoMeta[] | null>(null);
-  // const [currentVideo, setCurrentVideo] = useState<Pick<TVideo, "id"> | null>(
-  //   null,
-  // );
-  //
+
   const handleUpdateVideoMeta = (videoId: number, timestamp: number) => {
     const newData: TVideoMeta = { id: videoId, timestamp };
-    // console.log(newData, videoMeta);
     if (videoMeta) {
       const newVideoMeta = videoMeta.find((item) => item.id === videoId);
       if (newVideoMeta) {
@@ -75,8 +69,6 @@ function VideoContextProvider({ children }: { children: ReactNode }) {
       value={{
         videoSearch,
         videoList,
-        // currentVideo,
-        // setCurrentVideo,
         setVideoSearch,
         videoMeta,
         handleUpdateVideoMeta,

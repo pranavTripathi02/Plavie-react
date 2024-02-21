@@ -1,4 +1,3 @@
-// import { useNavigate } from "react-router-dom";
 import usePlaylistContext from "../hooks/usePlaylistContext";
 import DraggableQueue from "../components/draggableQueue";
 import { useState } from "react";
@@ -7,7 +6,6 @@ import LeftArrowSVG from "../assets/leftArrow.svg?react";
 import PencilSVG from "../assets/pencil.svg?react";
 import TrashSVG from "../assets/trash.svg?react";
 import CheckSVG from "../assets/check.svg?react";
-// import UnderDevelopment from "./underDevelopment";
 
 function Playlists() {
   const {
@@ -34,10 +32,7 @@ function Playlists() {
     addPlaylist({ playlistName });
     setCreateNewPlaylist(false);
   };
-  // setCurrentPlaylist(null);
-  // const navigate = useNavigate();
   const handleChoosePlaylist = (playlistId: number) => {
-    // console.log(playlists);
     const selectedPlaylist =
       playlists.find((playlist) => playlist.playlistId === playlistId) || null;
     setCurrentPlaylist(selectedPlaylist);
@@ -138,14 +133,13 @@ function Playlists() {
                   <img
                     className="bg-transparent"
                     src={playlist.playlistThumb}
-                    // srcSet=""
                     alt=""
                     height={120}
                     width={160}
-                    onError={(e) => {
-                      console.log(e);
-                      e.currentTarget.height = 120;
-                      e.currentTarget.width = 120;
+                    onError={() => {
+                      // console.log(e);
+                      // e.currentTarget.height = 120;
+                      // e.currentTarget.width = 120;
                     }}
                   />
                   <h4>{playlist.playlistName}</h4>

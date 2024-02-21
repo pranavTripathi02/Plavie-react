@@ -34,7 +34,7 @@ function VideoPlayer({
     if (videoMeta) {
       const videoMetaInfo = videoMeta.find((item) => item.id === video.id);
       if (videoMetaInfo) {
-        // setVideoProgress(videoMetaInfo.timestamp);
+        setVideoProgress(videoMetaInfo.timestamp);
         videoRef.current!.currentTime = videoMetaInfo.timestamp;
       }
     } else {
@@ -46,7 +46,7 @@ function VideoPlayer({
       else handleUpdateVideoMeta(video.id, videoRef.current!.currentTime);
     }, 10000);
     return () => clearInterval(saveVideoProgressInterval);
-  }, []);
+  }, [video.id]);
 
   const [isVideoFullscreen, setIsVideoFullscreen] = useState(false);
 

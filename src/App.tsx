@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <TopNavbar />
-      <main className="my-4 mb-8 w-5/6 mx-auto">
+      <main className="my-4 mb-24 md:mb-8 w-5/6 mx-auto">
         <Routes>
           <Route
             path="/"

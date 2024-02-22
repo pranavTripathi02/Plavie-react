@@ -211,7 +211,7 @@ function VideoPlayer({
               {/* </progress> */}
             </div>
             {/* controls line 2 */}
-            <div className="flex justify-between w-full md:px-2 h-fit">
+            <div className="flex justify-between w-full px-2 h-fit">
               {/* play pause and duration */}
               <div className="flex md:gap-4">
                 {/* play/pause */}
@@ -258,7 +258,7 @@ function VideoPlayer({
                   >
                     {!isVideoMuted ? <VolumeSVG /> : <VolumeMutedSVG />}
                   </button>
-                  <div className="md:group-hover/vol:inline-block hover:block overflow-hidden">
+                  <div className="hidden md:group-hover/vol:inline-block hover:block overflow-hidden">
                     <input
                       className="w-0 h-0 translate-x-[5rem] border-2 mx-2 group-hover/vol:w-24 group-hover/vol:translate-x-0 duration-300"
                       type="range"

@@ -4,24 +4,34 @@
 @tailwind components;
 @tailwind utilities;
 
-@media (prefers-color-scheme:light) {
-	:root {
+/* system-pref */
+/* @media (prefers-color-scheme:light) { */
+/* 	:root { */
+/* 		--bg: #dadada; */
+/* 		--text: #000000; */
+/* 		--text-alt: #000000; */
+/* 		--secondary: #ededed; */
+/* 		--secondary-2: #ccc; */
+/* 	} */
+/* } */
+/**/
+/* @media (prefers-color-scheme:dark) { */
+/* 	:root { */
+/* 		--bg: #131313; */
+/* 		--text: #9f9f9f; */
+/* 		--text-alt: #1f1f1f; */
+/* 		--secondary: #222; */
+/* 		--secondary-2: #202020; */
+/* 	} */
+/* } */
+
+/* [data-theme='light'] { */
+:root {
 		--bg: #dadada;
 		--text: #000000;
 		--text-alt: #000000;
 		--secondary: #ededed;
 		--secondary-2: #ccc;
-	}
-}
-
-@media (prefers-color-scheme:dark) {
-	:root {
-		--bg: #131313;
-		--text: #9f9f9f;
-		--text-alt: #1f1f1f;
-		--secondary: #222;
-		--secondary-2: #202020;
-	}
 }
 
 [data-theme='dark'] {
@@ -32,7 +42,6 @@
 	--secondary-2: #202020;
 }
 
-/* [data-theme='light'] { */
 
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

@@ -42,6 +42,7 @@ function VideoCard({
             e.preventDefault();
             handleShowPlaylistModal();
           }}
+          title="Add to playlist"
         >
           <div className="w-full h-fit flex shadow-2xl items-center gap-4">
             <span>Add to playlist</span>
@@ -64,6 +65,7 @@ function VideoCard({
               e.preventDefault();
               setShowMenu((prev) => !prev);
             }}
+            title="more option"
           >
             <VerticalMenuDotsSVG />
             {showMenu && (
@@ -88,6 +90,7 @@ function VideoCard({
                     e.preventDefault();
                     handleShowPlaylistModal();
                   }}
+                  title="Add to playlist"
                 >
                   <PlaylistAddSVG
                     height={24}

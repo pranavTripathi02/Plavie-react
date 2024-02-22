@@ -10,6 +10,7 @@ function Error404() {
           <a
             className="opacity-30 text-xs"
             href="https://storyset.com/web"
+            aria-label="Attribution link"
           >
             Web illustrations by Storyset
           </a>
@@ -21,6 +22,7 @@ function Error404() {
           <Link
             to="/"
             className="underline"
+            aria-label="Link back to home"
           >
             Home
           </Link>

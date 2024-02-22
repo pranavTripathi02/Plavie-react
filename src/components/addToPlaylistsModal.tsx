@@ -11,7 +11,7 @@ export function CreateNewPlaylist({
 }) {
   const [newPlaylistName, setNewPlaylistName] = useState("");
   return (
-    <div className="flex flex-col justify-start h-full mx-4 my-4 overflow-scroll w-full">
+    <div className="flex flex-col justify-start h-full mx-4 my-4 w-full">
       <label
         htmlFor="newPlaylistName"
         className="mt-2"
@@ -28,7 +28,7 @@ export function CreateNewPlaylist({
       >
         <input
           name="newPlaylistName"
-          className="rounded-lg px-2 py-2 bg-[var(--secondary)] outline-none"
+          className="rounded-lg w-2/3 px-2 py-2 bg-[var(--secondary)] outline-none"
           placeholder="New playlist name"
           type="text"
           value={newPlaylistName}
@@ -37,6 +37,7 @@ export function CreateNewPlaylist({
         <button
           className="bg-[var(--text)] text-[var(--bg)] p-2 rounded-lg mx-2"
           type="submit"
+          title="Save"
         >
           <CheckSVG />
         </button>
@@ -83,11 +84,14 @@ function AddToPlaylistModal({
         className="fixed inset-0 w-screen h-screen bg-black/50 z-10"
         onClick={handleShowPlaylistModal}
       />
-      <div className="fixed left-0 top-0 right-0 bottom-0 flex flex-col justify-between text-[var(--text)] h-2/5 lg:h-3/5 w-80 z-20 bg-[var(--bg)] rounded-xl m-auto">
+      <div className="fixed left-0 top-0 right-0 bottom-0 flex flex-col justify-between text-[var(--text)] h-2/5 lg:h-3/5 w-fit max-w-80 z-20 bg-[var(--bg)] rounded-xl m-auto overflow-hidden">
         {/* add to playlist header */}
-        <div className="flex mx-4 my-2 justify-between">
+        <div className="flex mx-4 my-2 justify-between overflow-hidden">
           <span>Add to playlist</span>
-          <button onClick={handleShowPlaylistModal}>
+          <button
+            onClick={handleShowPlaylistModal}
+            title="Close modal"
+          >
             <CloseSVG />
           </button>
         </div>
@@ -96,7 +100,7 @@ function AddToPlaylistModal({
         {createNewPlaylist ? (
           <CreateNewPlaylist handleAddNewPlaylist={handleAddNewPlaylist} />
         ) : (
-          <div className="flex flex-col justify-start h-full mx-4 my-2 overflow-scroll">
+          <div className="flex flex-col justify-start h-full mx-4 my-2">
             {playlists ? (
               playlists.map((playlist) => {
                 const isVideoInPlaylist = playlist.playlistContents?.includes(
@@ -133,6 +137,7 @@ function AddToPlaylistModal({
           <button
             className="me-4 my-2 px-2 py-1 rounded-lg border border-[var(--secondary-2)]"
             onClick={changeCreateNewPlaylistStatus}
+            title="New playlist"
           >
             {createNewPlaylist ? "Cancel" : "New playlist"}
           </button>

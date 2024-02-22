@@ -67,6 +67,7 @@ function Playlists() {
               setPlaylistView(false);
               // navigate(-1);
             }}
+            title="back"
           >
             <LeftArrowSVG />
             <span>Back to playlists</span>
@@ -157,6 +158,7 @@ function Playlists() {
           <button
             className="self-end mx-4 my-2 px-4 py-4 w-fit rounded-lg bg-[var(--secondary-2)]"
             onClick={changeCreateNewPlaylistStatus}
+            title={` ${createNewPlaylist ? "Cancel" : "Create new playlist"} `}
           >
             {createNewPlaylist ? "Cancel" : "Create new playlist"}
           </button>

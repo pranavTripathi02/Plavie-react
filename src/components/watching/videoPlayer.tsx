@@ -219,6 +219,7 @@ function VideoPlayer({
                   className="cursor-pointer bg-transparent"
                   id="playpause"
                   onClick={handlePlayPauseToggle}
+                  title={` ${isVideoPlaying ? "Pause" : "Play"} `}
                 >
                   {isVideoPlaying ? <PauseSVG /> : <PlaySVG />}
                 </button>
@@ -251,7 +252,10 @@ function VideoPlayer({
                 {/* </button> */}
                 {/* volume */}
                 <div className="group/vol flex items-center w-fit">
-                  <button onClick={handleVideoVolume}>
+                  <button
+                    onClick={handleVideoVolume}
+                    title="Mute"
+                  >
                     {!isVideoMuted ? <VolumeSVG /> : <VolumeMutedSVG />}
                   </button>
                   <div className="md:group-hover/vol:inline-block hover:block overflow-hidden">
@@ -272,6 +276,8 @@ function VideoPlayer({
                 <button
                   id="fullscreen"
                   onClick={(e) => handleFullscreenToggle(e)}
+                  title="Fullscreen"
+                  aria-label="fullscreen video toggle"
                 >
                   {isVideoFullscreen ? (
                     <FullscreenMinSVG />

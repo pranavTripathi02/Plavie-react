@@ -49,6 +49,7 @@ function ViewVideo({
                     e.preventDefault();
                     handleShowPlaylistModal();
                   }}
+                  title="Add to playlist"
                 >
                   Add video to playlist
                   <PlaylistAddSVG

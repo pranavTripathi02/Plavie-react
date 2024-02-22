@@ -8,6 +8,7 @@ function UnderDevelopment() {
         <a
           href="https://storyset.com/work"
           className="opacity-30 text-xs"
+          aria-label="Attribution link"
         >
           Work illustrations by Storyset
         </a>

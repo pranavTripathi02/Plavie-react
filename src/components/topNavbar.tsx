@@ -61,7 +61,10 @@ function TopNavbar() {
         />
       </div>
       {/* theme toggle */}
-      <button onClick={handleThemeChange}>
+      <button
+        onClick={handleThemeChange}
+        title="change theme"
+      >
         {currentTheme === "dark" ? (
           <Sun
             height={32}

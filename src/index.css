@@ -38,9 +38,9 @@
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
+	font-display: swap;
 
 	color-scheme: light dark;
-	/* max-width: 1060px; */
 
 	/* --accent: #dd22da; */
 	/* --accent: #965dce; */
@@ -49,8 +49,6 @@
 	background-color: var(--bg);
 	color: var(--text);
 	transition: all .25s cubic-bezier(0.455, 0.03, 0.515, 0.955);
-	/* transition: all .25s cubic-bezier(1, 1.5, 0, -1.5); */
-	/* tubelight? */
 }
 
 body {

@@ -188,7 +188,11 @@ function VideoPlayer({
         ></video>
         {/* controls */}
         {videoRef.current && (
-          <div className="controls absolute bottom-0 duration-200 ease-out opacity-0 group-hover:opacity-100 w-full flex flex-col justify-center bg-black/70 h-fit pt-1 pb-2 z-[2147483648]">
+          <div
+            className={`controls absolute bottom-0 duration-200 ease-out opacity-0 group-hover:opacity-100 w-full flex flex-col justify-center bg-black/70 h-fit pt-1 pb-2 ${
+              isVideoFullscreen ? "z-[2147483648]" : ""
+            }`}
+          >
             {/* controls line 1 */}
             <div className="timeline w-full px-2 h-fit">
               {/* progress bar */}
@@ -251,14 +255,14 @@ function VideoPlayer({
                 {/*   <LoopSVG /> */}
                 {/* </button> */}
                 {/* volume */}
-                <div className="group/vol flex items-center w-fit">
+                <div className="group/vol flex items-center w-fit px-2">
                   <button
                     onClick={handleVideoVolume}
                     title="Mute"
                   >
                     {!isVideoMuted ? <VolumeSVG /> : <VolumeMutedSVG />}
                   </button>
-                  <div className="hidden md:group-hover/vol:inline-block hover:block overflow-hidden">
+                  <div className="overflow-hidden w-0 group-hover/vol:w-28 duration-300">
                     <input
                       className="w-0 h-0 translate-x-[5rem] border-2 mx-2 group-hover/vol:w-24 group-hover/vol:translate-x-0 duration-300"
                       type="range"

@@ -27,15 +27,16 @@
 
 /* [data-theme='light'] { */
 :root {
-		--bg: #dadada;
+		--bg: #fff;
 		--text: #000000;
 		--text-alt: #000000;
 		--secondary: #ededed;
-		--secondary-2: #ccc;
+		--secondary-2: #eee;
 }
 
 [data-theme='dark'] {
-	--bg: #131313;
+	/* --bg: #131313; */
+	--bg: #0f0f0f;
 	--text: #9f9f9f;
 	--text-alt: #1f1f1f;
 	--secondary: #222;
@@ -51,9 +52,10 @@
 
 	color-scheme: light dark;
 
-	/* --accent: #dd22da; */
-	/* --accent: #965dce; */
-	--accent: #51a418;
+	--accent-col: #dd22da;
+	/* --accent-col: #965dce; */
+	/* --accent-col: #51a418; */
+	--accent: color-mix(in srgb, var(--text), var(--accent-col));
 
 	background-color: var(--bg);
 	color: var(--text);
@@ -65,21 +67,21 @@ body {
 }
 
 h1 {
-	font-size: 2.5rem;
-}
-
-h2 {
-	font-size: 2rem;
-}
-
-h3 {
 	font-size: 1.75rem;
 }
 
-h4 {
+h2 {
 	font-size: 1.5rem;
 }
 
-h5 {
+h3 {
+	font-size: 1.35rem;
+}
+
+h4 {
 	font-size: 1.25rem;
+}
+
+h5 {
+	font-size: 1.1rem;
 }

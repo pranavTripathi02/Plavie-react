@@ -74,7 +74,7 @@ function Playlists() {
           </button>
           <div className="flex flex-col md:flex-row">
             {/* playlist info */}
-            <div className="md:w-1/3 bg-gradient-to-b from-transparent from-30% to-[var(--accent)] to-99% ">
+            <div className="md:w-1/3">
               <div className="px-4 flex justify-between">
                 {editPlaylistName ? (
                   <input

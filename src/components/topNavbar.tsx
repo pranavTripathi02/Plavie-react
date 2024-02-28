@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Moon from "../assets/moon.svg?react";
 import Sun from "../assets/sun.svg?react";
-import Video from "../assets/video.svg?react";
+import VideoSVG from "../assets/video.svg?react";
 import { getTheme, setTheme } from "../utils/toggleTheme";
 import { Link } from "react-router-dom";
 import useVideosContext from "../hooks/useVideosContext";
@@ -36,11 +36,12 @@ function TopNavbar() {
             <span className="hidden sm:inline-block font-[Poppins]">
               PLAYVIE
             </span>
-            <Video
+            <VideoSVG
               strokeWidth={1}
               stroke={"var(--accent)"}
               width={32}
               height={32}
+              aria-label="logo"
             />
           </div>
         </Link>
@@ -63,17 +64,19 @@ function TopNavbar() {
       {/* theme toggle */}
       <button
         onClick={handleThemeChange}
-        title="change theme"
+        title="Change theme"
       >
         {currentTheme === "dark" ? (
           <Sun
-            height={32}
-            width={32}
+            height={24}
+            width={24}
+            aria-label="light mode"
           />
         ) : (
           <Moon
-            height={32}
-            width={32}
+            height={24}
+            width={24}
+            aria-label="dark mode"
           />
         )}
       </button>

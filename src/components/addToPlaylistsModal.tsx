@@ -84,9 +84,9 @@ function AddToPlaylistModal({
         className="fixed inset-0 w-screen h-screen bg-black/50 z-10"
         onClick={handleShowPlaylistModal}
       />
-      <div className="fixed left-0 top-0 right-0 bottom-0 flex flex-col justify-between text-[var(--text)] h-2/5 lg:h-3/5 w-fit max-w-80 z-20 bg-[var(--bg)] rounded-xl m-auto overflow-hidden">
+      <div className="fixed left-0 top-0 right-0 bottom-0 flex flex-col justify-between text-[var(--text)] min-h-fit h-2/5 lg:h-3/5 w-fit max-w-80 z-20 bg-[var(--bg)] rounded-xl m-auto overflow-hidden">
         {/* add to playlist header */}
-        <div className="flex mx-4 my-2 justify-between overflow-hidden">
+        <div className="flex h-fit mx-4 py-4 justify-between overflow-x-hidden">
           <span>Add to playlist</span>
           <button
             onClick={handleShowPlaylistModal}
@@ -108,7 +108,7 @@ function AddToPlaylistModal({
                 );
                 return (
                   <label
-                    className="flex justify-between items-center border-b border-[var(--secondary)] mt-2 px-2 select-none"
+                    className="flex justify-between items-center border-b border-[var(--secondary)] mt-2 p-2 select-none"
                     key={playlist.playlistId}
                     htmlFor={playlist.playlistId.toString()}
                   >
@@ -133,16 +133,16 @@ function AddToPlaylistModal({
           </div>
         )}
         {/* create new playlist */}
-        <div className="w-full flex justify-end">
+        <div className="w-full flex justify-end gap-2">
           <button
-            className="me-4 my-2 px-2 py-1 rounded-lg border border-[var(--secondary-2)]"
+            className="ms-4 my-2 px-2 py-1 rounded-lg border border-[var(--secondary-2)]"
             onClick={changeCreateNewPlaylistStatus}
             title="New playlist"
           >
             {createNewPlaylist ? "Cancel" : "New playlist"}
           </button>
           <button
-            className="me-4 my-2 px-2 py-1 rounded-lg bg-[var(--text)] text-[var(--secondary)]"
+            className="mx-4 my-2 px-2 py-1 rounded-lg bg-[var(--text)] text-[var(--secondary)]"
             onClick={handleShowPlaylistModal}
           >
             Done

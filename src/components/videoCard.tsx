@@ -49,6 +49,7 @@ function VideoCard({
             <PlaylistAddSVG
               height={32}
               width={32}
+              aria-label="Add to playlist"
             />
           </div>
         </button>
@@ -67,7 +68,7 @@ function VideoCard({
             }}
             title="more option"
           >
-            <VerticalMenuDotsSVG />
+            <VerticalMenuDotsSVG aria-label="more menu" />
             {showMenu && (
               <div
                 onMouseLeave={() => setShowMenu(false)}
@@ -81,6 +82,7 @@ function VideoCard({
                   <PlaySVG
                     height={24}
                     width={24}
+                    aria-label="Play"
                   />
                   Play
                 </Link>
@@ -95,6 +97,7 @@ function VideoCard({
                   <PlaylistAddSVG
                     height={24}
                     width={24}
+                    aria-label="Add to playlist"
                   />
                   Add to playlist
                 </button>

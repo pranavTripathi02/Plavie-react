@@ -71,7 +71,7 @@ function Watch() {
       {/* main video player */}
       {videoSelected ? (
         <>
-          <div>
+          <div className="w-full">
             <ViewVideo
               video={videoSelected}
               handleVideoEnded={handleVideoEnded}

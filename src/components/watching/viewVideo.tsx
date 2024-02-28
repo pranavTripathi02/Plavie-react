@@ -23,7 +23,7 @@ function ViewVideo({
 
   return (
     <>
-      <div className="pb-4 px-1 bg-black/20 rounded-xl w-full ">
+      <div className="pb-4 px-1 bg-black/20 rounded-xl w-full">
         {/* black bg behind vid*/}
         {/* <div className="absolute z-[-1] w-screen left-0 top-0 bottom-0 border-2 bg-black" /> */}
         {video && (
